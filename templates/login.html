@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">           
+
+    <style>
+
+body {font-family: Arial, Helvetica, sans-serif;}
+form {border: 3px solid #008B8B;
+     text-align: center;
+     margin: 60px;
+     padding: 10px;
+}
+
+input[type=text], input[type=password], input[type=email] {
+    width: 50%;
+    padding: 12px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    
+  }
+
+  .container{
+    margin: 10px;
+    padding: 10px;
+  }
+
+  button {
+    background-color: #008B8B;
+    color: white;
+    padding: 14px 20px;
+    border: none;
+    cursor:pointer;
+    width: 50%;
+    font-size: 20px;
+    border-radius:12px;
+
+
+  }
+  h1 {
+    text-align: center;
+    font-size: 40px;
+  }
+  
+  .email{
+    border: 1px;
+  }
+
+    </style>
+</head>
+<body>
+
+    <h1>Login</h1>
+
+<form method="post">
+  
+  <div class="container">
+    <label for="username"><b>Username</b></label>
+    <input type="text" placeholder="Enter Username" for="username" id="username" required><br>
+      <br>
+
+    <label for="password"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" for="password" id="password" required><br>
+    
+      <input type="checkbox" onclick="showPassword()">Show Password
+
+      <script>
+      function showPassword() {
+        var x = document.getElementById("password");
+        if (x.type === "password") {
+          x.type = "text";
+        } else {
+          x.type = "password";
+        }
+      }
+      </script>
+    <br><br>
+
+    <button type="submit">Login</button><br>
+    <p>If you don't have an account please <a href="{{ url_for('register') }}">Register</a></p>
+
+  </div>
+  </div>
+</form>
+
+</body>
+</html>
