@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, intial-scale-1,0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+   
+    <title>Home</title>
+</head>
+<body>
+  <h1>Welcome {{session.name}}</h1>
+<div class = "homeContainer">
+ 
+  <div class = "grid1">
+    
+    <ul>
+        <li><a href = '/speedtest'>Speed Test</a></li>
+        <li><a href = '/networks'>Network Scan</a></li>
+        <li><a href = '/bandwidth'>Bandwidth</a></li>
+        <li><a href = '/networkHealth'>Network Health</a></li>
+        <li><a href = '/vulnerabilites'>Vulnerabilites</a></li>
+    </ul>
+
+  </div>
+  <div class="grid2">
+    <!--Element that is used to draw graphs -->
+   
+    <canvas id="myChart"></canvas>
+      </div>
+      <!--include it here to  get it working-->
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      
+      <script>
+        const ctx = document.getElementById('myChart');
+      
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            
+            labels: {{labels | tojson }},
+            datasets: [{
+              label: '# of Votes',
+              data: {{values | tojson}},
+             
+            }]
+          },
+         
+        });
+      </script>
+      
+  </div>
+</div>
+
+
+
+</body>
+</html> 

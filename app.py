@@ -46,6 +46,19 @@ def login():
 def index():
     return render_template('index.html')
 
+@app.route('/home')
+def home():
+    
+    labels = ["Dog","Cat","Rabbit","Mouse"]
+    values =[3,2,5,6]
+
+   
+    return render_template("home.html",labels=labels,values=values)
+
+@app.route('/logout')
+def logout():
+    return render_template("logout.html")
+
 @app.route('/database')
 def database():
     connect = sqlite3.connect('database.db')
@@ -55,5 +68,22 @@ def database():
     data = cursor.fetchall()
     return render_template("database.html", data=data)
 
+@app.route('/speedtest')
+def speedtest():
+    return render_template('speedtest.html')
+
+@app.route('/networks')
+def networks():
+    return render_template('networks.html')
+
+@app.route('/bandwidth')
+def bandwidth():
+    return render_template('bandwidth.html')
+@app.route('/networkHealth')
+def networkHealth():
+    return render_template('networkHealth.html')
+@app.route('/vulnerabilites')
+def vulnerabilites():
+    return render_template('vulnerabilties.html')
 if __name__=='__main__':
     app.run(debug = True)
