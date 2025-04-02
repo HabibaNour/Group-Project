@@ -4,10 +4,23 @@ import re
 from flask_sqlalchemy import SQLAlchemy
 import os
 from sqlalchemy import text
+import speedtest
+import threading
+from flask_socketio import SocketIO
 from werkzeug.security import generate_password_hash
+from src.broadbandtests import bandwidth_tests #imports class
+
 
 app = Flask(__name__)
+socketio = SocketIO(app, cors_allowed_origins="*")
 
+@app.route('/contact')
+def contact():
+    return render_template("contact.html")
+
+@app.route('/about')
+def about():
+    return render_template("about.html")
 def db():
     connect = sqlite3.connect('database.db')
     connect.execute('''CREATE TABLE IF NOT EXISTS users (
@@ -49,11 +62,10 @@ def index():
 @app.route('/home')
 def home():
     
-    labels = ["Dog","Cat","Rabbit","Mouse"]
-    values =[3,2,5,6]
+   
 
    
-    return render_template("home.html",labels=labels,values=values)
+    return render_template("home.html")
 
 @app.route('/logout')
 def logout():
@@ -67,6 +79,10 @@ def database():
 
     data = cursor.fetchall()
     return render_template("database.html", data=data)
+
+#starts the tests when the app starts
+speed_test = bandwidth_tests(socketio) #creates object passing socketio through
+speed_test.start_speedtests()
 
 @app.route('/speedtest')
 def speedtest():
@@ -86,4 +102,6 @@ def networkHealth():
 def vulnerabilites():
     return render_template('vulnerabilties.html')
 if __name__=='__main__':
-    app.run(debug = True)
+    
+    socketio.run(app)
+    

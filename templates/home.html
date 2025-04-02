@@ -27,9 +27,9 @@
     <!--Element that is used to draw graphs -->
    
     <canvas id="myChart"></canvas>
-      </div>
+      </div><script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
       <!--include it here to  get it working-->
-      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      
       
       <script>
         const ctx = document.getElementById('myChart');
@@ -38,10 +38,10 @@
           type: 'line',
           data: {
             
-            labels: {{labels | tojson }},
+            labels: ["cats","dogs","rabbit"],
             datasets: [{
               label: '# of Votes',
-              data: {{values | tojson}},
+              data: [2,4,6],
              
             }]
           },

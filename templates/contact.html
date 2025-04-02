@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+    <title>Contact</title>
+</head>
+<body>
+    {% include 'nav.html' %}
+    
+    <div class="container">
+            <h2>Please use below to contact us</h2>
+            <form action="mailto:info@site.ie" method="POST" enctype="application/x-www-form-urlencoded">
+                <label for="name">Name</label> <br><input type="text" name="name"><br>
+                <label for="email">Email</label><br><input type="email" name="email"><br>
+                <label for= "phone">Phone</label><br><input type="text" name="phone"><br>
+                <label for="comment">Comment</label><br>
+                <textarea name = "comment" rows="20" cols="50">
+                    </textarea><br>
+                
+            
+            <button type ="submit">submit</button>
+            </form>
+      
+    
+    </div>
+</body>
+</html>
