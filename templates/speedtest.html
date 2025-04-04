@@ -22,15 +22,43 @@
         <div><p>testing</p></div>
         <div><p> test 2</p></div>
     </div>
-
+    <div class = "containter">
+        <canvas id="myChart"></canvas>
+      </div><script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <!--include it here to  get it working-->
+    </div>
     <script>
         var socket = io.connect("http://localhost:5000");
-
+        let speedData = [];
+        const ctx = document.getElementById('myChart');
+      
+      var chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          
+          labels: ['Download','Upload'],
+          datasets: [{
+            label: '# of Votes',
+            data: [],
+            options:{
+                responsive: true
+            }
+           
+          }]
+        },
+       
+      });
+     
         socket.on('speedtest_results', function(data) {
             document.getElementById("download").innerText = data.download + " Mbps";
             document.getElementById("upload").innerText = data.upload + " Mbps";
             document.getElementById("ping").innerText = data.ping + " Ms";
+            chart.data.dataset.push(data.download,data.upload);
+            chart.update();
         });
+       
+      
+        
     </script>
 </body>
 </html>

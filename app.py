@@ -98,9 +98,10 @@ def bandwidth():
 @app.route('/networkHealth')
 def networkHealth():
     return render_template('networkHealth.html')
-@app.route('/vulnerabilites')
-def vulnerabilites():
-    return render_template('vulnerabilties.html')
+
+@app.route('/vulnerabilities')
+def vulnerabilities():
+    return render_template('vulnerabilities.html')
 if __name__=='__main__':
     
     socketio.run(app)
