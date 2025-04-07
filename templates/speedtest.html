@@ -1,67 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Speedtest </title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Speedtest</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    {% include 'navLoggedin.html' %}
-
-    <div class="flex-container">
-        <h1>Real Time Speed Test</h1>
-        <div>
-            <p><strong>Download Speed:</strong> <span id="download">Updating </span></p>
-            <p><strong>Upload Speed:</strong> <span id="upload">Updating </span></p>
-            <p><strong>Ping:</strong> <span id="ping">Updating </span></p>
-        </div>
+{% include 'navLoggedin.html' %}
 
 
-        <div><p>testing</p></div>
-        <div><p> test 2</p></div>
-    </div>
-    <div class = "containter">
-        <canvas id="myChart"></canvas>
-      </div><script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-      <!--include it here to  get it working-->
-    </div>
-    <script>
-        var socket = io.connect("http://localhost:5000");
-        let speedData = [];
-        const ctx = document.getElementById('myChart');
-      
-      var chart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          
-          labels: ['Download','Upload'],
-          datasets: [{
-            label: '# of Votes',
-            data: [],
-            options:{
-                responsive: true
-            }
-           
-          }]
-        },
-       
-      });
-     
-        socket.on('speedtest_results', function(data) {
-            document.getElementById("download").innerText = data.download + " Mbps";
-            document.getElementById("upload").innerText = data.upload + " Mbps";
-            document.getElementById("ping").innerText = data.ping + " Ms";
-            chart.data.dataset.push(data.download,data.upload);
-            chart.update();
-        });
-       
-      
-        
-    </script>
+<!-- put this in css file maybe? only makes graph on screen without scrolling-->
+<style>
+    #myChart {
+    max-width: 600px;
+    max-height: 300px;
+    width: 100%;
+    height: auto;
+    margin: 0 auto; /*centers graph*/
+}
+</style>
+
+  <div class="flex-container">
+    <h1>Real Time Speed Test</h1>
+    <p><strong>Download Speed:</strong> <span id="download">Updating</span></p>
+    <p><strong>Upload Speed:</strong> <span id="upload">Updating</span></p>
+    <p><strong>Ping:</strong> <span id="ping">Updating</span></p>
+  </div>
+
+  <div class="container">
+    <canvas id="myChart"></canvas>
+  </div>
+
+  <script>
+    var socket = io.connect("http://localhost:5000");
+
+    const ctx = document.getElementById('myChart');
+    const chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Download', 'Upload'],
+        datasets: [{
+          label: 'Speed (Mbps)',
+          data: [0, 0],
+          backgroundColor: ['#36a2eb', '#ff6384'],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+                beginAtZero: true
+          }
+        }
+      }
+    });
+
+    socket.on('speedtest_results', function(data) {
+      document.getElementById("download").innerText = data.download + " Mbps";
+      document.getElementById("upload").innerText = data.upload + " Mbps";
+      document.getElementById("ping").innerText = data.ping + " ms";
+
+      chart.data.datasets[0].data = [data.download, data.upload]; //overwrites data instead of appends data
+      chart.update();
+    });
+  </script>
 </body>
 </html>
-
-
- 
