@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, intial-scale-1,0">
+    <title>Change Email</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+<body>
+    {% include 'navLoggedin.html' %}  
+<form method="POST">
+  
+  <div class="container">
+    <label for="username"><b>Enter Username</b></label>
+    <input type="text" placeholder="Enter Username" name="username" id="username" autocomplete="off" required><br>
+      <br>
+
+      <div class="email">
+      <label for="email"><b>Enter Email</b></label>
+      <input type="email" placeholder="Enter Email" name="email" id="email" autocomplete="off" required><br>
+      </div>
+        <br>
+        <div class="email">
+            <label for="newEmail"><b>Enter new Email</b></label>
+            <input type="newEmail" placeholder="Enter New Email" name="newEmail" id="newEmail" autocomplete="off" required><br>
+        </div>
+             
+
+    <button type="submit">submit</button><br>
+  </div>
+ 
+ 
+</form>
+
+</body>
+</html> 

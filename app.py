@@ -27,6 +27,9 @@ def db():
                             username TEXT NOT NULL,
                             email TEXT UNIQUE NOT NULL,
                             password TEXT NOT NULL)''')
+    
+    ##connect2 = sqlite3.connect('database.db')
+    ##connect2.execute('''CREATE TABLE IF NOT EXISTS alerts (Timestamp TIMESTAMP, device TEXT not null )''')
 
     
 
@@ -98,7 +101,50 @@ def bandwidth():
 @app.route('/networkHealth')
 def networkHealth():
     return render_template('networkHealth.html')
+@app.route('/settingsHome')
+def settingsHome():
+    return render_template('settingsHome.html')
+@app.route('/changeUsername',methods=['GET', 'POST'])
 
+def changeUsername():
+  
+    username = request.form['username']
+    newUsername =request.form['newUsername']
+
+    with sqlite3.connect("database.db") as users:
+        cursor = users.cursor()
+        cursor.execute("UPDATE users  SET username =  (?) WHERE username = (?)",
+                    (username,newUsername))
+        users.commit()
+
+    return render_template('changeUsername.html')
+@app.route('/changePassword',methods=['GET', 'POST'])
+def changePassword():
+    username = request.form['username']
+    password = request.form['password']
+    newPassword =request.form['newPassword']
+
+    with sqlite3.connect("database.db") as users:
+        cursor = users.cursor()
+        cursor.execute("UPDATE users  SET password =  (?) WHERE username = (?) AND password = (?)",
+                    (newPassword,username,password))
+        users.commit()
+    return render_template('changePassword.html')
+@app.route('/changeEmail')
+def changeEmail():
+    username = request.form['username']
+    email = request.form['email']
+    newEmail =request.form['newEmail']
+
+    with sqlite3.connect("database.db") as users:
+        cursor = users.cursor()
+        cursor.execute("UPDATE users  SET email =  (?) WHERE username = (?) AND email = (?)",
+                    (newEmail,username,email))
+        users.commit()
+    return render_template('changeEmail.html',methods=['GET', 'POST'])
+@app.route('/alerts')
+def alerts():
+    return render_template('alerts.html')
 @app.route('/vulnerabilities')
 def vulnerabilities():
     return render_template('vulnerabilities.html')
