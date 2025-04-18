@@ -20,6 +20,27 @@
     height: auto;
     margin: 0 auto; /*centers graph*/
 }
+*{
+  margin:0;
+  padding:0;
+  font-family: sans-serif;
+}
+.chartMenu{
+  width: 100vw;
+  height: 40px;
+
+}
+.speed{
+  max-width: 600px;
+    max-height: 300px;
+    width: 100%;
+    height: auto;
+    margin: 0 auto; 
+}
+.chartMenu p{
+  padding: 10px;
+  font-size: 20px;
+}
 </style>
 
   <div class="flex-container">
@@ -28,12 +49,74 @@
     <p><strong>Upload Speed:</strong> <span id="upload">Updating</span></p>
     <p><strong>Ping:</strong> <span id="ping">Updating</span></p>
   </div>
-
+  <div class="speed">
+    <canvas id = 'speedometer'></canvas>
+  </div>
   <div class="container">
     <canvas id="myChart"></canvas>
   </div>
+  
 
   <script>
+    const gaugeNeedle = {
+      id: 'gaugeNeedle',
+      afterDatasetDraw(chart, args, plugins){
+        const {ctx,data} = chart;
+        ctx.save();
+        const needleValue = data.datasets[0].needValue;
+        xCenter = chart.getDatasetMeta(0).data[0].x;
+        yCenter = chart.getDatasetMeta(0).data[0].y;
+        outerRadius = chart.getDatasetMeta(0).data[0].outerRadius;
+        angle = Math.PI;
+        dataTotal = data.datasets[0].data.reduce((a,b) => a + b,0);
+        
+        let circumference =((chart.getDatasetMeta(0).data[0].circumference / Math.PI) / data.datasets[0].data[0] ) * needleValue;
+        needleValueAngle = circumference + 1.5;
+        ctx.translate(xCenter,yCenter);
+        ctx.rotate(angle * needleValueAngle);
+        //needle
+        ctx.beginPath();
+        ctx.fillStyle = 'cyan';
+        ctx.moveTo(0 - 5,0);
+        ctx.lineTo(0,-outerRadius);
+        ctx.lineTo(0+ 5 ,0);
+        ctx.stroke();
+        ctx.fill();
+        
+        ctx.restore();
+
+
+      }
+      
+    };
+    const config = {
+      type:'doughnut',
+      data:{
+        datasets: [
+        {
+          label: ['Download','Upload','Ping'],
+          data:[1,1,1],
+          circumference: 180,
+          rotation: 270,
+          cutout:'80%',
+          needValue: 2
+          
+
+        }],
+      },
+      options:{
+        plugins: {
+          legend:{
+            display: false
+          }
+        }
+       
+      },plugins: [gaugeNeedle]
+    };
+    const speedometer = new Chart(
+      document.getElementById('speedometer'),
+      config
+    );
     var socket = io.connect("http://localhost:5000");
 
     const ctx = document.getElementById('myChart');
@@ -66,6 +149,8 @@
 
       chart.data.datasets[0].data = [data.download, data.upload]; //overwrites data instead of appends data
       chart.update();
+      speedometer.data.datasets[0].data= [data.download, data.upload, data.ping]; // u
+      speedometer.update()
     });
   </script>
 </body>

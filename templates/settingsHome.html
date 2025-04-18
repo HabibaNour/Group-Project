@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, intial-scale-1,0">
-    <title>Home</title>
+    <title>Settings</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
 </head>
 <body>
     {% include 'navLoggedin.html' %}  
-<div class = "main">
+<div class>
     <h1>Settings</h1>
-    <ul>
+    <ul class = "setting">
         <li><a href="{{ url_for('changeUsername') }}">Change username</a></li>
         <li><a href="{{ url_for('changePassword') }}">Change password</a></li>
         <li><a href="{{ url_for('changeEmail') }}">Change email</a></li>

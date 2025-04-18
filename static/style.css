@@ -41,7 +41,7 @@ input[type=text], input[type=password], input[type=email] {
     font-size: 50px;
   }
   
-  .email{
+  .email, .newEmail{
     border: 1px;
   }
   table, th, td { 
@@ -85,5 +85,16 @@ input[type=text], input[type=password], input[type=email] {
   grid-row:2/4;
 }
 
+.setting{
+  align-items: center;
+  margin: 20px;
+  font-size: large;
+  list-style-type: none;
+}
+
+.tables{
+  align-items: center;
+  font-size: large;
+}
 
   

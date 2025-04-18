@@ -3,17 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, intial-scale-1,0">
-    <title>Home</title>
+    <title>Alerts</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
 </head>
 <body>
     {% include 'navLoggedin.html' %}  
-<div class = "main">
-    <h1>Network Health </h1>
-    <a href = '/'>Click here to go back to home page </a>
 
-</div>
+    <h1>Alerts </h1>
+    <div class = "tables">
+    <table>
+        <tr>
+            <th>Time</th>
+            <th>Device</th>
+            
+        </tr>
+        <tr>
+            <th>21/04/24</th>
+            <th>Iphone device joined </th>
+        </tr>
+    </table>
+    
+    </div>
+
 
 
 </body>
