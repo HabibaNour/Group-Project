@@ -26,7 +26,12 @@ def db():
     connect.execute('''CREATE TABLE IF NOT EXISTS users (
                             username TEXT NOT NULL,
                             email TEXT UNIQUE NOT NULL,
-                            password TEXT NOT NULL)''')
+                            password TEXT NOT NULL,
+                            confpassword TEXT NOT NULL)''')
+                            
+    connect.commit()
+    connect.close()
+db()
     
     ##connect2 = sqlite3.connect('database.db')
     ##connect2.execute('''CREATE TABLE IF NOT EXISTS alerts (Timestamp TIMESTAMP, device TEXT not null )''')
@@ -36,27 +41,75 @@ def db():
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    min_length = 8
+    uppercase_regex = re.compile(r'[A-Z]')
+    lowercase_regex = re.compile(r'[a-z]')
+    digit_regex = re.compile(r'\d')
+    special_char_regex = re.compile(r'[!@#$%^&*()_+{}[\]:;<>,.?~\\/-]')
 
     if request.method == 'POST':
         username = request.form['username']
         email = request.form['email']
         password = request.form['password']
+        confpassword = request.form['confpassword']
 
+        #add users to the database
+        #check of the username is in the database with an error message
         with sqlite3.connect("database.db") as users:
             cursor = users.cursor()
+
+            if password != confpassword:
+                error="your password and confirmed password need to be the same"
+                return render_template('register.html', error=error) 
+            
+            if len(password) < min_length:
+                LenError="Weak: password should be at least 8 characters"
+                return render_template('register.html', error=LenError)
+            
+            elif not uppercase_regex.search(password) or not lowercase_regex.search(password):
+                caseError= "Weak: password should contain at least one upper and lower cases letter"
+                return render_template('register.html', error=caseError)
+
+            elif not digit_regex.search(password):
+                digitError= "Weak: password should contain at least one number"
+                return render_template('register.html', error=digitError)
+
+                        
+            elif not special_char_regex.search(password):
+                charError= "Weak: password should contain at least one special character"
+                return render_template('register.html', error=charError)
+
+
             cursor.execute("INSERT INTO users \
-                        (username, email, password) VALUES (?,?,?)",
-                        (username, email, password))
+                        (username, email, password, confpassword) VALUES (?,?,?,?)",
+                        (username, email, password, confpassword))
             users.commit()
+
 
         return render_template("index.html") 
     else: 
-        return render_template('register.html') 
+        return render_template('register.html')  
         
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template("login.html")
+
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        with sqlite3.connect("database.db") as users:
+            cursor = users.cursor()
+            cursor.execute ('SELECT username FROM users WHERE username = ? AND password = ?',
+                            (username, password))
+            login = cursor.fetchone()
+
+            if login:
+                return render_template('index.html')
+            else:
+                return render_template('login.html', error='invalid user')
+            
+    return render_template('login.html')
 
 @app.route('/index')
 def index():
