@@ -158,19 +158,7 @@ def networkHealth():
 @app.route('/settingsHome')
 def settingsHome():
     return render_template('settingsHome.html')
-@app.route('/changeUsername', methods=['GET','POST'])
-def changeUsername():
-    if request.method == 'POST':
-        username = request.form['username']
-        newUsername =request.form['newUsername']
-    
-        with sqlite3.connect("database.db") as users:
-            cursor = users.cursor()
-            cursor.execute("UPDATE users  SET username =  (?) WHERE username = (?)",
-                        (username,newUsername))
-            users.commit()
 
-    return render_template('changeUsername.html')
 @app.route('/changePassword', methods=['GET', 'POST'])
 def changePassword():
     if request.method == 'POST':
