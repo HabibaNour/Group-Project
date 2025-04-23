@@ -9,7 +9,7 @@ import threading
 from flask_socketio import SocketIO
 from werkzeug.security import generate_password_hash
 from src.broadbandtests import bandwidth_tests #imports class
-
+from functools import wraps 
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
@@ -105,7 +105,8 @@ def login():
             login = cursor.fetchone()
 
             if login:
-                return render_template('index.html')
+                session['username'] = request.form.get('username')
+                return render_template('home.html')
             else:
                 return render_template('login.html', error='invalid user')
             

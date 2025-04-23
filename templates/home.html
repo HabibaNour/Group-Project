@@ -9,47 +9,14 @@
     <title>Home</title>
 </head>
 <body>
-  <h1>Welcome {{session.name}}</h1>
+  <h1>Welcome {{username}}</h1>
 <div class = "homeContainer">
  
-  <div class = "grid1">
-    
-    <ul>
-        <li><a href = '/speedtest'>Speed Test</a></li>
-        <li><a href = '/networks'>Network Scan</a></li>
-        <li><a href = '/bandwidth'>Bandwidth</a></li>
-        <li><a href = '/networkHealth'>Network Health</a></li>
-        <li><a href = '/vulnerabilites'>Vulnerabilites</a></li>
-    </ul>
+  <div class = "grid">
+   
 
   </div>
-  <div class="grid2">
-    <!--Element that is used to draw graphs -->
-   
-    <canvas id="myChart"></canvas>
-      </div><script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-      <!--include it here to  get it working-->
-      
-      
-      <script>
-        const ctx = document.getElementById('myChart');
-      
-        var chart = new Chart(ctx, {
-          type: 'line',
-          data: {
-            
-            labels: ["cats","dogs","rabbit"],
-            datasets: [{
-              label: '# of Votes',
-              data: [2,4,6],
-             
-            }]
-          },
-         
-        });
-      </script>
-      
-  </div>
+
 </div>
 
 
