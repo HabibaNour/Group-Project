@@ -8,12 +8,12 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-{% include 'nav.html' %}
+{% include 'navLoggedin.html' %}
 
 
 <!-- put this in css file maybe? only makes graph on screen without scrolling-->
 <style>
-    #myChart {
+    #myChart,#chart2,#chart3 {
     max-width: 600px;
     max-height: 300px;
     width: 100%;
@@ -41,21 +41,45 @@
   padding: 10px;
   font-size: 20px;
 }
+.flexChart{
+  display: flex;
+  flex-flow: row wrap;
+  align-content: space-between;
+ 
+}
+.flexbox{
+  max-width: 600px;
+  max-height: 300px;
+  width: 100%;
+  align-items: flex-start;
+}
 </style>
 
-  <div class="flex-container">
-    <h1>Real Time Speed Test</h1>
-    <p><strong>Download Speed:</strong> <span id="download">Updating</span></p>
-    <p><strong>Upload Speed:</strong> <span id="upload">Updating</span></p>
-    <p><strong>Ping:</strong> <span id="ping">Updating</span></p>
-  </div>
-  <div class="speed">
-    <canvas id = 'speedometer'></canvas>
-  </div>
-  <div class="container">
-    <canvas id="myChart"></canvas>
+  <div class="flexchart">
+    <div class="flexbox">
+      <h1>Real Time Speed Test</h1>
+      <p><strong>Download Speed:</strong> <span id="download">Updating</span></p>
+      <p><strong>Upload Speed:</strong> <span id="upload">Updating</span></p>
+      <p><strong>Ping:</strong> <span id="ping">Updating</span></p>
+     </div>
+     <div class="flexbox">
+      <canvas id = 'speedometer'></canvas>
+    </div>
+
   </div>
   
+  <div class = "flexChart">
+  <div class="flexbox">
+    <canvas id="myChart"></canvas>
+  </div>
+  <div class="flexbox">
+    <canvas id="chart2"></canvas>
+  </div>
+  <div class="flexbox">
+    <canvas id="chart3"></canvas>
+  </div>
+  </div>
+
 
   <script>
     const gaugeNeedle = {
@@ -94,7 +118,8 @@
       data:{
         datasets: [
         {
-          label: ['Download','Upload','Ping'],
+          label: ['Testing'],
+          
           data:[1,1,1],
           circumference: 180,
           rotation: 270,
@@ -118,39 +143,89 @@
       config
     );
     var socket = io.connect("http://localhost:5000");
-
+    //download chart
     const ctx = document.getElementById('myChart');
     const chart = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: ['Download', 'Upload'],
+        labels:'Download',
         datasets: [{
-          label: 'Speed (Mbps)',
-          data: [0, 0],
-          backgroundColor: ['#36a2eb', '#ff6384'],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-            y: {
-                beginAtZero: true
-          }
+        data:[],
+        label: 'Download speed(Mbps)',
+        
         }
+        
+      ]
+      },
+      
       }
-    });
+    );
+    //upload chart 
+    const ctx2 = document.getElementById('chart2');
+    const chart2 = new Chart(ctx2, {
+      type: 'bar',
+      data: {
+        labels:'Upload',
+        datasets: [{
+        data:[],
+        label: 'Upload speed(Mbps)',
+        backgroundColor: 'rgba(255,99,132,0.2)'
+        
+        }
+        
+      ]
+      },
+      
+      }
+    );
+      //ping chart 
+    const ctx3 = document.getElementById('chart3');
+    const chart3 = new Chart(ctx3, {
+      type: 'bar',
+      data: {
+        labels:'Pinging',
+        datasets: [{
+        data:[],
+        label: 'Ping (ms)',
+        backgroundColor: 'rgba(255,159,64,0.2)'
+        
+        }
+        
+      ]
+      },
+      
+      }
+    );
 
     socket.on('speedtest_results', function(data) {
       document.getElementById("download").innerText = data.download + " Mbps";
       document.getElementById("upload").innerText = data.upload + " Mbps";
       document.getElementById("ping").innerText = data.ping + " ms";
-
-      chart.data.datasets[0].data = [data.download, data.upload]; //overwrites data instead of appends data
-      chart.update();
+      
+     // data for speedometer
       speedometer.data.datasets[0].data= [data.download, data.upload, data.ping]; // u
-      speedometer.update()
+      speedometer.update();
+
+      //adds data to charts for upload, download and ping 
+      let downloadArray = [];
+      downloadArray.push(data.download); 
+      chart.data.datasets[0].data.push(downloadArray);
+ 
+      
+      let upload = [];
+      upload.push(data.upload);
+      chart2.data.datasets[0].data.push(upload);
+
+      let ping= [];
+      ping.push(data.ping);
+      chart3.data.datasets[0].data.push(ping);
+
+
+      // updates charts every 2 minutes 
+      setInterval(chart.update(),1200000);
+      setInterval(chart2.update(),1200000);
+      setInterval(chart3.update(),1200000);
+     
     });
   </script>
 </body>

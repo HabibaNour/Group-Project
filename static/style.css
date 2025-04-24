@@ -69,12 +69,14 @@ input[type=text], input[type=password], input[type=email] {
  
  .grid2 {
     grid-column:5/13;
-    align-items: left;
-    margin:10px;
-    height: 500px;
-    width: 500px;
+    max-width: 600px;
+    max-height: 300px;
+    width: 100%;
+    height: auto;
+    margin: 0 auto; 
+    }
    
- }
+
  .grid1{
      grid-column:1 /5;
     align-items: center;
@@ -159,3 +161,9 @@ body{
 .mbotton{
   float: left;
 }  
+
+.flexChart{
+  display: flex;
+  flex-flow: row wrap;
+  align-content: space-between;
+}
