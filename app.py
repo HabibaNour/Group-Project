@@ -9,10 +9,16 @@ import threading
 from flask_socketio import SocketIO
 from werkzeug.security import generate_password_hash
 from src.broadbandtests import bandwidth_tests #imports class
+from src.SSID import selecting_SSID
+#from src.finddevices import devices #fixing error, will upload on sat.
 from functools import wraps 
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
+
+ssid_selector = selecting_SSID(socketio)
+#find_devices = devices(socketio)
+#find_devices.handle_socket()
 
 @app.route('/contact')
 def contact():
@@ -118,10 +124,6 @@ def index():
 
 @app.route('/home')
 def home():
-    
-   
-
-   
     return render_template("home.html")
 
 @app.route('/logout')
@@ -147,7 +149,20 @@ def speedtest():
 
 @app.route('/networks')
 def networks():
+    ssid_selector.start_SSID_selection()
     return render_template('networks.html')
+
+@app.route('/test')
+def test():
+    return render_template('test.html') #for testing
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    ssid_selector.stop_SSID_selection()
+
+@app.route('/devices')
+def clients():
+    return render_template('devices.html')
 
 @app.route('/bandwidth')
 def bandwidth():
