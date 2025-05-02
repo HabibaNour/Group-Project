@@ -10,8 +10,24 @@
 </head>
 <body>
     {% if 'username' in session }
+        <div class="topnav" id="myTopnav">
+            <a href="{{ url_for('home') }}"><i class="fa fa-fw fa-home"></i>Home</a>
+            <a href="{{ url_for('networks') }}"><i class="fa-fw"></i>Networks</a>
+            <a href="{{ url_for('networkHealth') }}"><i class="fa-fw"></i>Network Health</a>
+            <a href="{{ url_for('speedtest') }}"><i class="fa-fw"></i>Speed test</a>
+            <a href="{{ url_for('alerts') }}"><i class="fa-fw"></i>Alerts</a>
+            <a href="{{ url_for('settingsHome') }}"><i class="fa-fw"></i>Settings</a>
+            <a href="{{url for('logout')}}"><i class="fa-fw"></i>Logout </a>
+            <div class="mbotton" id="mbotton">
+            <button onclick="modeFunction()"><i class="fa fa-moon-o"></i></button>
+            </div>
+
+            <a href="javascript:void(0);" class="icon" 
+            onclick="myFunction()"><i class="fa fa-bars"></i></a>
+        </div>
+    {% else }
     <div class="topnav" id="myTopnav">
-        <a href="{{ url_for('index') }}"><i class="fa fa-fw fa-home"></i>Home</a>
+        <a href="{{ url_for('register') }}"><i class="fa fa-fw fa-home"></i>Home</a>
         <a href="{{ url_for('register') }}"><i class="fa fa-user-plus"></i>Register</a>
         <a href="{{ url_for('login') }}"><i class="fa fa-sign-in"></i>Login</a>
         <a href="{{ url_for('contact') }}"><i class="fa fa-fw fa-envelope"></i>Contact</a>
@@ -22,25 +38,6 @@
         <div class="mbotton" id="mbotton">
         <a href="javascript:void(0)" id="theme-toggle"><i class="fa fa-moon-o"></i>Mode</a>
         </div>
-
-        <a href="javascript:void(0);" class="icon" 
-        onclick="myFunction()"><i class="fa fa-bars"></i></a>
-    </div>
-        </div>
-    {% else }
-    <div class="topnav" id="myTopnav">
-        <a href="{{ url_for('index') }}"><i class="fa fa-fw fa-home"></i>Home</a>
-        <a href="{{ url_for('login') }}"><i class="fa fa-sign-in"></i>Login</a>
-        <a href="{{ url_for('contact') }}"><i class="fa fa-fw fa-envelope"></i>Contact</a>
-        <a href="{{ url_for('about') }}"><i class="fa fa-user-o"></i>About us</a>
-        
-        <div class="mbotton" id="mbotton">
-        <button onclick="modeFunction()"><i class="fa fa-moon-o"></i></button>
-        </div>
-
-        <a href="javascript:void(0);" class="icon" 
-        onclick="myFunction()"><i class="fa fa-bars"></i></a>
-    </div>
     {% endif %}
     <script>
 
