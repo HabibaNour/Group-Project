@@ -54,6 +54,5 @@ class selecting_SSID:
         Thread(target=self.start_sniffing, daemon=True).start()
 
     def stop_SSID_selection(self):
-        print("[*] Stopping SSID scan...")
         self.stop_event.set()
 
