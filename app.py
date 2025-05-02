@@ -94,7 +94,7 @@ def register():
 
         return render_template("index.html") 
     else: 
-        return render_template('register.html')  
+        return render_template('register.html') 
         
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -129,6 +129,14 @@ def home():
 @app.route('/logout')
 def logout():
     return render_template("logout.html")
+
+@app.route('/help')
+def help():
+    return render_template('help.html')
+
+@app.route('/loginAdmin')
+def loginAdmin():
+    return render_template('loginAdmin.html')
 
 @app.route('/database')
 def database():

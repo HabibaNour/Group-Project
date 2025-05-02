@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="/static/style.css">
+
+
+</head>
+<body>
+     {% include 'nav.html' %}
+
+    <h1>Admin Login</h1>
+
+<form method="post">
+  
+  <div class="container1">
+    {% if error%}
+    <p><strong>{{error}}</strong></p>
+    {% endif%}
+
+    <label for="username"><b>Username</b></label>
+    <input type="text" placeholder="Enter Username" id="username" required><br>
+      <br>
+
+    <label for="password"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" id="password" required><br>
+    
+      <input type="checkbox" onclick="showPassword()">Show Password
+
+      <script>
+      function showPassword() {
+        var x = document.getElementById("password");
+        if (x.type === "password") {
+          x.type = "text";
+        } else {
+          x.type = "password";
+        }
+      }
+      </script>
+    <br><br>
+
+    <button type="submit">Login</button><br>
+    </div>
+    </form>
+</body>
+</html>

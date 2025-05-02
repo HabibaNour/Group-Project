@@ -2,65 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
     <title>Register</title>
-    <!-- <style>
-
-body {font-family: Arial, Helvetica, sans-serif;}
-form {border: 3px solid #008B8B;
-     text-align: center;
-     margin: 60px;
-     padding: 10px;
-}
-
-input[type=text], input[type=password], input[type=email] {
-    width: 50%;
-    padding: 12px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    
-  }
-
-  .container{
-    margin: 10px;
-    padding: 10px;
-  }
-
-  button {
-    background-color: #008B8B;
-    color: white;
-    padding: 14px 20px;
-    border: none;
-    cursor:pointer;
-    width: 50%;
-    font-size: 20px;
-    border-radius:12px;
-
-  }
-  h1 {
-    text-align: center;
-    font-size: 50px;
-  }
-  
-  .email{
-    border: 1px;
-  }
-
-    </style> -->
+    <link rel="stylesheet" href="/static/style.css">
 </head>
+
 <body>
+
   {% include 'nav.html' %}
 
     <h1>Register</h1>
 
+    <div class="errorMessage">
+    {% if error%}
+    <p><strong>{{error}}</strong></p>
+    <p><strong>{{lenError}}</strong></p>
+    <p><strong>{{caseError}}</strong></p>
+    <p><strong>{{digitError}}</strong></p>
+    <p><strong>{{charError}}</strong></p>
+    {% endif%}
+    </div>
+    
+
 <form method="POST">
   
-  <div class="container">
+  <div class="container1">
+
     <label for="username"><b>Username</b></label>
     <input type="text" placeholder="Enter Username" name="username" id="username" autocomplete="off" required><br>
       <br>
@@ -72,31 +39,113 @@ input[type=text], input[type=password], input[type=email] {
         <br>
 
     <label for="password"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="password" id="password" autocomplete="off" required><br>
-      <br>
-
-      <input type="checkbox" onclick="showPassword()">Show Password
+    <input type="password" placeholder="Enter Password" name="password" id="password" autocomplete="off"
+    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*'[!@#$%^&*()_+{}[\]:;>,.?~\\/-]).{8,}"
+    required>
+    <i class="fa fa-eye" id="togglePassword" style="margin-left: -30px; cursor: pointer"></i>
+    <br> 
 
       <script>
-      function showPassword() {
-        var x = document.getElementById("password");
-        if (x.type === "password") {
-          x.type = "text";
-        } else {
-          x.type = "password";
-        }
-      }
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password')
+
+        togglePassword.addEventListener('click', function (e){
+          const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+
+          password.setAttribute('type', type);
+          this.classList.toggle('fa-eye-slash');
+          this.classList.toggle('fa-eye')
+        });
+
       </script>
     <br>
+    
+    <div id="message">
+      <h4>Password must contain the following:</h4>
+      <h4 id="letter" class="invalid"><b>lowercase letter</b></h4>
+      <h4 id="capital" class="invalid"><b>capital (uppercase) letter</b></h4>
+      <h4 id="number" class="invalid"><b>number</b></h4>
+      <h4 id="length" class="invalid"><b>Minimum 8 characters</b></h4>
+      <h4 id="characters" class="invalid"><b>Most have characters</b></h4>
+    </div>
+
     <label for="confpassword"><b>Confirm Password</b></label>
     <input type="password" placeholder="Confirm Password" name="confpassword" id="confpassword" autocomplete="off" required><br>
         <br>
+        </div>
+    
+        <script>
+          var myInput = document.getElementById("password");
+          var letter = document.getElementById("letter");
+          var capital = document.getElementById("capital");
+          var number = document.getElementById("number");
+          var length = document.getElementById("length");
+          var characters = document.getElementById("characters");
+    
+    
+          //click to the password field
+          myInput.onfocus = function(){
+            document.getElementById("message").style.display ="block";
+          }
+    
+          //hide the box with password requirements 
+          myInput.onblur = function(){
+            document.getElementById("message").style.display ="none";
+          }
+    
+          //when writing the password
+          myInput.onkeyup = function(){
+            var lowerCase = /[a-z]/g;
+            if(myInput.value.match(lowerCase)){
+              letter.classList.remove("invalid");
+              letter.classList.add("valid");
+            }else{
+              letter.classList.remove("valid");
+              letter.classList.add("invalid");
+            }
+    
+            var upperCase = /[A-Z]/g;
+            if(myInput.value.match(upperCase)){
+              capital.classList.remove("invalid");
+              capital.classList.add("valid");
+            }else{
+              capital.classList.remove("valid");
+              capital.classList.add("invalid");
+            }
+    
+            var numbers = /[0-9]/g;
+            if(myInput.value.match(numbers)){
+              number.classList.remove("invalid");
+              number.classList.add("valid");
+            }else{
+              number.classList.remove("valid");
+              number.classList.add("invalid");
+            }
+    
+            if(myInput.value.length >= 8){
+              length.classList.remove("invalid");
+              length.classList.add("valid");
+            }else{
+              length.classList.remove("valid");
+              length.classList.add("invalid");
+            }
+    
+            var specialCharacters = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g;
+            if(myInput.value.match(specialCharacters)){
+              characters.classList.remove("invalid");
+              characters.classList.add("valid");
+            }else{
+              characters.classList.remove("valid");
+              characters.classList.add("invalid");
+            }
+    
+          }
+        </script>
 
     <button type="submit">submit</button><br>
-  </div>
-  </div>
-  <p>If you have an account please <a href="{{ url_for('login') }}">Login</a></p>
+    <p>If you have an account please <a href="{{ url_for('login') }}">Login</a></p>
 </form>
+
 
 </body>
 </html>
