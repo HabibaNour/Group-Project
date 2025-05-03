@@ -28,38 +28,46 @@
   
   <div class="container1">
 
-    <label for="username"><b>Username</b></label>
-    <input type="text" placeholder="Enter Username" name="username" id="username" autocomplete="off" required><br>
-      <br>
+    <div class="grid">
+      <div class="formGrid">
 
-      <div class="email">
-      <label for="email"><b>Email</b></label>
-      <input type="email" placeholder="Enter Email" name="email" id="email" autocomplete="off" required><br>
-      </div>
+      <label for="username"><b>Username</b></label><br>
+      <input type="text" placeholder="Enter Username" name="username" id="username" autocomplete="off" required><br>
         <br>
 
-    <label for="password"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="password" id="password" autocomplete="off"
-    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*'[!@#$%^&*()_+{}[\]:;>,.?~\\/-]).{8,}"
-    required>
-    <i class="fa fa-eye" id="togglePassword" style="margin-left: -30px; cursor: pointer"></i>
-    <br> 
+        <div class="email">
+        <label for="email"><b>Email</b></label><br>
+        <input type="email" placeholder="Enter Email" name="email" id="email" autocomplete="off" required><br>
+        </div>
+          <br>
 
-      <script>
-        const togglePassword = document.querySelector('#togglePassword');
-        const password = document.querySelector('#password')
+      <label for="password"><b>Password</b></label><br>
+      <input type="password" placeholder="Enter Password" name="password" id="password" autocomplete="off"
+      pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*'[!@#$%^&*()_+{}[\]:;>,.?~\\/-]).{8,}"
+      required>
+      <i class="fa fa-eye" id="togglePassword" style="margin-left: -30px; cursor: pointer"></i>
+      <br> 
 
-        togglePassword.addEventListener('click', function (e){
-          const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        <script>
+          const togglePassword = document.querySelector('#togglePassword');
+          const password = document.querySelector('#password')
 
-          password.setAttribute('type', type);
-          this.classList.toggle('fa-eye-slash');
-          this.classList.toggle('fa-eye')
-        });
+          togglePassword.addEventListener('click', function (e){
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
 
-      </script>
-    <br>
-    
+            password.setAttribute('type', type);
+            this.classList.toggle('fa-eye-slash');
+            this.classList.toggle('fa-eye')
+          });
+
+        </script>
+      <br>
+
+      <label for="confpassword"><b>Confirm Password</b></label><br>
+      <input type="password" placeholder="Confirm Password" name="confpassword" id="confpassword" autocomplete="off" required><br>
+          <br>
+      </div>
+
     <div id="message">
       <h4>Password must contain the following:</h4>
       <h4 id="letter" class="invalid"><b>lowercase letter</b></h4>
@@ -68,11 +76,8 @@
       <h4 id="length" class="invalid"><b>Minimum 8 characters</b></h4>
       <h4 id="characters" class="invalid"><b>Most have characters</b></h4>
     </div>
+  </div>
 
-    <label for="confpassword"><b>Confirm Password</b></label>
-    <input type="password" placeholder="Confirm Password" name="confpassword" id="confpassword" autocomplete="off" required><br>
-        <br>
-        </div>
     
         <script>
           var myInput = document.getElementById("password");
@@ -142,7 +147,9 @@
           }
         </script>
 
+    <div class="button">
     <button type="submit">submit</button><br>
+    </div>
     <p>If you have an account please <a href="{{ url_for('login') }}">Login</a></p>
 </form>
 

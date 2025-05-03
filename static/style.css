@@ -233,3 +233,21 @@ color: black;
   text-align: center;
   color: red;
 }
+
+.grid{
+  display: grid;
+  grid-template-areas: "formGrid message";
+  grid-template-columns: 50fr 50fr;
+  gap: 3px;
+}
+
+.grid > div.formGrid{
+  grid-area: formGrid;
+}
+
+.grid > div.message{
+  grid-area: message;
+  background-color:whitesmoke;
+  padding: 10px;
+  border-radius:12px;
+}
