@@ -112,7 +112,8 @@ def login():
         user = cursor.fetchone()
 
         if user:
-            return render_template('index.html')
+            session['username'] = user.username
+            return render_template('index.html', username=user.username)
         else:
             error = 'please try again'
             return render_template('login.html', error=error)
