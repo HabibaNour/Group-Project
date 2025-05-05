@@ -136,16 +136,25 @@ def help():
 
 @app.route('/loginAdmin')
 def loginAdmin():
+
+    username = 'NRHadmins' 
+    password = 'NRHpassAdmins'
+        
+    if request.method == 'POST':
+        connect = sqlite3.connect('database.db')
+        cursor = connect.cursor()
+        cursor.execute('SELECT * FROM users')
+
+        data = cursor.fetchall()
+
+        if username == username and password == password:
+            return render_template('database.html', data=data)
+        else:
+            error = 'invalid, please try again'
+            return render_template('loginAdmin.html', error=error)
+            
     return render_template('loginAdmin.html')
 
-@app.route('/database')
-def database():
-    connect = sqlite3.connect('database.db')
-    cursor = connect.cursor()
-    cursor.execute('SELECT * FROM users')
-
-    data = cursor.fetchall()
-    return render_template("database.html", data=data)
 
 #starts the tests when the app starts
 speed_test = bandwidth_tests(socketio) #creates object passing socketio through
