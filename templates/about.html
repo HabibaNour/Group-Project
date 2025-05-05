@@ -10,8 +10,9 @@
 <body>
     {% include 'nav.html' %}
     
-    <div class=" container">
-        <h1>About </h1>
+    <div class=" homeContainer">
+        <div class = "grid1">
+            <h1>About </h1>
         <p>This site can be used to monitor your own network once logged in. </p>
     <p>Aspects that can be monitored include:</p>
     <ul>
@@ -23,6 +24,7 @@
         <li>Alerts</li>
     </ul>
    <p>If you wish to contact us, <a href="{{url_for('contact')}}">Click here</a></p>
+        
 
     </div>
 </body>

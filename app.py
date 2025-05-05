@@ -30,8 +30,8 @@ def about():
 def db():
     connect = sqlite3.connect('database.db')
     connect.execute('''CREATE TABLE IF NOT EXISTS users (
-                            username TEXT NOT NULL,
-                            email TEXT UNIQUE NOT NULL,
+                            username TEXT PRIMARY KEY NOT NULL,
+                            email TEXT  NOT NULL,
                             password TEXT NOT NULL,
                             confpassword TEXT NOT NULL)''')
                             
@@ -92,7 +92,7 @@ def register():
             users.commit()
 
 
-        return render_template("index.html") 
+        return redirect("/index") 
     else: 
         return render_template('register.html') 
         
