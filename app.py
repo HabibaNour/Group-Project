@@ -99,23 +99,23 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
 
-        with sqlite3.connect("database.db") as users:
-            cursor = users.cursor()
-            cursor.execute ('SELECT username FROM users WHERE username = ? AND password = ?',
-                            (username, password))
-            login = cursor.fetchone()
+        connect = sqlite3.connect('database.db')
+        connect.row_factory = sqlite3.Row
+        cursor = connect.cursor()
 
-            if login:
-                session['username'] = request.form.get('username')
-                return render_template('home.html')
-            else:
-                return render_template('login.html', error='invalid user')
-            
+        cursor.execute('SELECT username FROM users WHERE username = ? AND password = ?',
+                        (username, password))
+        user = cursor.fetchone()
+
+        if user:
+            return render_template('index.html')
+        else:
+            error = 'please try again'
+            return render_template('login.html', error=error)
     return render_template('login.html')
 
 @app.route('/index')
