@@ -134,26 +134,25 @@ def logout():
 def help():
     return render_template('help.html')
 
-@app.route('/loginAdmin')
+@app.route('/loginAdmin', methods=['GET', 'POST'])
 def loginAdmin():
-
-    username = 'NRHadmins' 
-    password = 'NRHpassAdmins'
+        username = 'NRHadmins' 
+        password = 'NRHpassAdmins'
         
-    if request.method == 'POST':
-        connect = sqlite3.connect('database.db')
-        cursor = connect.cursor()
-        cursor.execute('SELECT * FROM users')
+        if request.method == 'POST':
+            connect = sqlite3.connect('database.db')
+            cursor = connect.cursor()
+            cursor.execute('SELECT * FROM users')
 
-        data = cursor.fetchall()
+            data = cursor.fetchall()
 
-        if username == username and password == password:
-            return render_template('database.html', data=data)
-        else:
-            error = 'invalid, please try again'
-            return render_template('loginAdmin.html', error=error)
+            if username == username and password == password:
+                return render_template('database.html', data=data)
+            else:
+                error = 'invalid, please try again'
+                return render_template('loginAdmin.html', error=error)
             
-    return render_template('loginAdmin.html')
+        return render_template('loginAdmin.html')
 
 
 #starts the tests when the app starts
