@@ -5,80 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>Login</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<!--
-    <style>
-
-body {font-family: Arial, Helvetica, sans-serif;}
-form {border: 3px solid #008B8B;
-     text-align: center;
-     margin: 60px;
-     padding: 10px;
-}
-
-input[type=text], input[type=password], input[type=email] {
-    width: 50%;
-    padding: 12px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    
-  }
-
-  .container{
-    margin: 10px;
-    padding: 10px;
-  }
-
-  button {
-    background-color: #008B8B;
-    color: white;
-    padding: 14px 20px;
-    border: none;
-    cursor:pointer;
-    width: 50%;
-    font-size: 20px;
-    border-radius:12px;
-
-
-  }
-  h1 {
-    text-align: center;
-    font-size: 40px;
-  }
-  
-  .email{
-    border: 1px;
-  }
-
-    </style> -->
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
+  {% include 'nav.html' %}
 
     <h1>Login</h1>
 
-<form method="post">
+    <div class="errorMessage">
+    {% if error%}
+    <p><strong>{{error}}</strong></p>
+    {% endif%}
+    </div>
+
+<form method="POST" action="{{ url_for('login') }}">
   
-  <div class="container">
-    <label for="username"><b>Username</b></label>
+  <div class="container1">
+
+    <label for="username"><b>Username</b></label><br>
     <input type="text" placeholder="Enter Username" for="username" id="username" required><br>
       <br>
 
-    <label for="password"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" for="password" id="password" required><br>
-    
-      <input type="checkbox" onclick="showPassword()">Show Password
+    <label for="password"><b>Password</b></label><br>
+    <input type="password" placeholder="Enter Password" for="password" id="password" required>
+    <i class="fa fa-eye" id="togglePassword" style="margin-left: -30px; cursor: pointer"></i>
+
+    <br>
+    <br> 
+
 
       <script>
-      function showPassword() {
-        var x = document.getElementById("password");
-        if (x.type === "password") {
-          x.type = "text";
-        } else {
-          x.type = "password";
-        }
-      }
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password')
+
+        togglePassword.addEventListener('click', function (e){
+          const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+
+          password.setAttribute('type', type);
+          this.classList.toggle('fa-eye-slash');
+          this.classList.toggle('fa-eye')
+        });
+
       </script>
     <br><br>
 
@@ -87,6 +54,7 @@ input[type=text], input[type=password], input[type=email] {
 
   </div>
   </div>
+
 </form>
 
 </body>

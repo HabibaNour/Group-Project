@@ -89,21 +89,22 @@ input[type=text], input[type=password], input[type=email] {
   }
 
   button {
-    background-color: #006080;
-    color: white;
+    background-color: #ddd;
+    color: black;
     padding: 14px 20px;
     border: none;
     cursor:pointer;
     width: 20%;
     font-size: 20px;
     border-radius:12px;
+
   }
 
   a:link{
-    color: blueviolet;
+    color:black;
   }
   a:visited{
-    color: blueviolet;
+    color:black;
   }
   a:hover{
     color: red;
@@ -355,4 +356,15 @@ color: black;
   background-color:whitesmoke;
   padding: 10px;
   border-radius:12px;
+}
+
+.dark-theme > form{
+  border: 3px solid white;
+  margin: 3px;
+  padding: 1px;
+}
+
+.dark-theme > .container > div{
+ border: 2px solid white;
+ padding: 30px;
 }
