@@ -6,66 +6,31 @@
   <title>Speedtest</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 {% include 'navLoggedin.html' %}
 
 
-<!-- put this in css file maybe? only makes graph on screen without scrolling-->
-<style>
-    #myChart,#chart2,#chart3 {
-    max-width: 600px;
-    max-height: 300px;
-    width: 100%;
-    height: auto;
-    margin: 0 auto; /*centers graph*/
-}
-*{
-  margin:0;
-  padding:0;
-  font-family: sans-serif;
-}
-.chartMenu{
-  width: 100vw;
-  height: 40px;
 
-}
-.speed{
-  max-width: 600px;
-    max-height: 300px;
-    width: 100%;
-    height: auto;
-    margin: 0 auto; 
-}
-.chartMenu p{
-  padding: 10px;
-  font-size: 20px;
-}
-.flexChart{
-  display: flex;
-  flex-flow: row wrap;
-  align-content: space-between;
- 
-}
-.flexbox{
-  max-width: 600px;
-  max-height: 300px;
-  width: 100%;
-  align-items: flex-start;
-}
-</style>
+<h1>Real Time Speed Test</h1>
+<div class="flexbox">
+  <canvas id = 'speedometer'></canvas>
+</div>
 
   <div class="flexchart">
     <div class="flexbox">
-      <h1>Real Time Speed Test</h1>
+      
       <p><strong>Download Speed:</strong> <span id="download">Updating</span></p>
       <p><strong>Upload Speed:</strong> <span id="upload">Updating</span></p>
       <p><strong>Ping:</strong> <span id="ping">Updating</span></p>
      </div>
-     <div class="flexbox">
-      <canvas id = 'speedometer'></canvas>
-    </div>
-
+    
+    <button> <a href="javascript:void(0);" 
+     onclick="turnOff()"></a>Stop</button>
+     <button> <a href="javascript:void(0);" 
+      onclick="turnOn()"></a>Stop</button>
+ </div>
   </div>
   
   <div class = "flexChart">
@@ -82,6 +47,7 @@
 
 
   <script>
+    //for needle 
     const gaugeNeedle = {
       id: 'gaugeNeedle',
       afterDatasetDraw(chart, args, plugins){
@@ -113,6 +79,7 @@
       }
       
     };
+    //for speedtest shape 
     const config = {
       type:'doughnut',
       data:{
@@ -138,6 +105,7 @@
        
       },plugins: [gaugeNeedle]
     };
+    //chart for speedometer 
     const speedometer = new Chart(
       document.getElementById('speedometer'),
       config
@@ -227,6 +195,8 @@
       setInterval(chart3.update(),1200000);
      
     });
-  </script>
+
+
+</script>
 </body>
 </html>
