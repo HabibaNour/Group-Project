@@ -4,24 +4,27 @@
         <title>Users</title> 
         <link rel="stylesheet" href="../static/style.css">
     </head> 
-    <!-- <style> 
+    <style> 
         table, th, td { 
           border:1px solid black; 
         } 
-        </style> -->
+        </style>
+
     <body> 
         <table style="width:100%"> 
             <tr> 
               <th>Username</th> 
               <th>email</th> 
               <th>password</th> 
+              <th>confpassword</th> 
             </tr> 
             {%for participant in data%} 
-               <tr> 
-                 <td>{{participant[1]}}</td> 
-                 <td>{{participant[2]}}</td> 
-                 <td>{{participant[3]}}</td> 
-                </tr> 
+            <tr> 
+              <td>{{participant[0]}}</td> 
+              <td>{{participant[1]}}</td> 
+              <td>{{participant[2]}}</td> 
+              <td>{{participant[3]}}</td> 
+             </tr>  
             {%endfor%} 
           </table>           
     </body> 

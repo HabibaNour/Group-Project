@@ -22,12 +22,13 @@
             <button onclick="modeFunction()"><i class="fa fa-moon-o"></i></button>
             </div>
 
-            <a href="javascript:void(0);" class="icon" 
-            onclick="myFunction()"><i class="fa fa-bars"></i></a>
-        </div>
+            <div class="mbotton" id="mbotton">
+            <a href="javascript:void(0)" id="theme-toggle"><i class="fa fa-moon-o"></i>Mode</a>
+            </div>
+
     {% else }
     <div class="topnav" id="myTopnav">
-        <a href="{{ url_for('register') }}"><i class="fa fa-fw fa-home"></i>Home</a>
+        <a href="{{ url_for('index') }}"><i class="fa fa-fw fa-home"></i>Home</a>
         <a href="{{ url_for('register') }}"><i class="fa fa-user-plus"></i>Register</a>
         <a href="{{ url_for('login') }}"><i class="fa fa-sign-in"></i>Login</a>
         <a href="{{ url_for('contact') }}"><i class="fa fa-fw fa-envelope"></i>Contact</a>
@@ -41,14 +42,6 @@
     {% endif %}
     <script>
 
-        function myFunction(){
-            var x = document.getElementById("myTopnav");
-            if (x.className === "topnav"){
-                x.className += " responsive";
-            } else{
-                x.className = "topnav";
-            }
-        }
 
         const themeToggleBtn = document.getElementById('theme-toggle');
         const currentTheme = localStorage.getItem('theme') || 'light-theme';
