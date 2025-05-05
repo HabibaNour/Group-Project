@@ -10,9 +10,12 @@
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
     <link rel="stylesheet" type="text/css" href="static/overhang.min.css" />
     <script type="text/javascript" src="static/overhang.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
 </head>
     <body>
+
+        {% include 'navLoggedin.html' %}
         
     <div class = "main">
         <h1>Networks </h1>
