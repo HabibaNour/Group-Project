@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">    
     <title>Register</title>
     <link rel="stylesheet" href="/static/style.css">
+
+
 </head>
 
 <body>
@@ -31,44 +33,46 @@
     <div class="grid">
       <div class="formGrid">
 
-      <label for="username"><b>Username</b></label><br>
-      <input type="text" placeholder="Enter Username" name="username" id="username" autocomplete="off" required><br>
-        <br>
-
-        <div class="email">
-        <label for="email"><b>Email</b></label><br>
-        <input type="email" placeholder="Enter Email" name="email" id="email" autocomplete="off" required><br>
-        </div>
+        <label for="username"><b>Username</b></label><br>
+        <input type="text" placeholder="Enter Username" name="username" id="username" autocomplete="off" required><br>
           <br>
 
-      <label for="password"><b>Password</b></label><br>
-      <input type="password" placeholder="Enter Password" name="password" id="password" autocomplete="off"
-      pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*'[!@#$%^&*()_+{}[\]:;>,.?~\\/-]).{8,}"
-      required>
-      <i class="fa fa-eye" id="togglePassword" style="margin-left: -30px; cursor: pointer"></i>
-      <br> 
+          <div class="email">
+          <label for="email"><b>Email</b></label><br>
+          <input type="email" placeholder="Enter Email" name="email" id="email" autocomplete="off" required><br>
+          </div>
+            <br>
 
-        <script>
-          const togglePassword = document.querySelector('#togglePassword');
-          const password = document.querySelector('#password')
+        <label for="password"><b>Password</b></label> <br>
+        <input type="password" placeholder="Enter Password" name="password" id="password" autocomplete="off"
+        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*'[!@#$%^&*()_+{}[\]:;>,.?~\\/-]).{8,}"
+        required>
+        <i class="fa fa-eye" id="togglePassword" style="margin-left: -30px; cursor: pointer; color: black;"></i>
+        <br> 
 
-          togglePassword.addEventListener('click', function (e){
-            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
 
-            password.setAttribute('type', type);
-            this.classList.toggle('fa-eye-slash');
-            this.classList.toggle('fa-eye')
-          });
+          <script>
+            const togglePassword = document.querySelector('#togglePassword');
+            const password = document.querySelector('#password')
 
-        </script>
-      <br>
+            togglePassword.addEventListener('click', function (e){
+              const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
 
-      <label for="confpassword"><b>Confirm Password</b></label><br>
-      <input type="password" placeholder="Confirm Password" name="confpassword" id="confpassword" autocomplete="off" required><br>
+              password.setAttribute('type', type);
+              this.classList.toggle('fa-eye-slash');
+              this.classList.toggle('fa-eye')
+            });
+
+          </script>
+        <br>
+
+        <label for="confpassword"><b>Confirm Password</b></label><br>
+        <input type="password" placeholder="Confirm Password" name="confpassword" id="confpassword" autocomplete="off" required><br>
           <br>
       </div>
 
-    <div id="message">
+    
+    <div class="message" id="message">
       <h4>Password must contain the following:</h4>
       <h4 id="letter" class="invalid"><b>lowercase letter</b></h4>
       <h4 id="capital" class="invalid"><b>capital (uppercase) letter</b></h4>
@@ -77,7 +81,7 @@
       <h4 id="characters" class="invalid"><b>Most have characters</b></h4>
     </div>
   </div>
-
+    
     
         <script>
           var myInput = document.getElementById("password");
@@ -150,7 +154,7 @@
     <div class="button">
     <button type="submit">submit</button><br>
     </div>
-    <p>If you have an account please <a href="{{ url_for('login') }}">Login</a></p>
+    <p>If have an account please <a href="{{ url_for('login') }}">Login</a></p>
 </form>
 
 
