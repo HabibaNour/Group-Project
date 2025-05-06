@@ -112,8 +112,7 @@ def login():
         user = cursor.fetchone()
 
         if user:
-            session['username'] = user.username
-            return render_template('index.html', username=user.username)
+            return render_template('index.html')
         else:
             error = 'please try again'
             return render_template('login.html', error=error)
@@ -137,17 +136,20 @@ def help():
 
 @app.route('/loginAdmin', methods=['GET', 'POST'])
 def loginAdmin():
-        username = 'NRHadmins' 
-        password = 'NRHpassAdmins'
+        adminUsername = 'NRHadmins' 
+        adminPassword = 'NRHpassAdmins'
         
         if request.method == 'POST':
-            connect = sqlite3.connect('database.db')
-            cursor = connect.cursor()
-            cursor.execute('SELECT * FROM users')
+            username = request.form.get('username')
+            password = request.form.get('password')
 
-            data = cursor.fetchall()
 
-            if username == username and password == password:
+            if username == adminUsername and password == adminPassword:
+                connect = sqlite3.connect('database.db')
+                cursor = connect.cursor()
+                cursor.execute('SELECT * FROM users')
+
+                data = cursor.fetchall()
                 return render_template('database.html', data=data)
             else:
                 error = 'invalid, please try again'
