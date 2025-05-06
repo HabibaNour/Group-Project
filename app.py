@@ -106,23 +106,23 @@ def requiredLogin(f):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
 
-        with sqlite3.connect("database.db") as users:
-            cursor = users.cursor()
-            cursor.execute ('SELECT username FROM users WHERE username = ? AND password = ?',
-                            (username, password))
-            login = cursor.fetchone()
+        connect = sqlite3.connect('database.db')
+        connect.row_factory = sqlite3.Row
+        cursor = connect.cursor()
 
-            if login:
-                session['username'] = request.form.get('username')
-                return render_template('home.html')
-            else:
-                return render_template('login.html', error='invalid user')
-            
+        cursor.execute('SELECT username FROM users WHERE username = ? AND password = ?',
+                        (username, password))
+        user = cursor.fetchone()
+
+        if user:
+            return render_template('index.html')
+        else:
+            error = 'please try again'
+            return render_template('login.html', error=error)
     return render_template('login.html')
 
 @app.route('/index')
@@ -143,17 +143,20 @@ def help():
 
 @app.route('/loginAdmin', methods=['GET', 'POST'])
 def loginAdmin():
-        username = 'NRHadmins' 
-        password = 'NRHpassAdmins'
+        adminUsername = 'NRHadmins' 
+        adminPassword = 'NRHpassAdmins'
         
         if request.method == 'POST':
-            connect = sqlite3.connect('database.db')
-            cursor = connect.cursor()
-            cursor.execute('SELECT * FROM users')
+            username = request.form.get('username')
+            password = request.form.get('password')
 
-            data = cursor.fetchall()
 
-            if username == username and password == password:
+            if username == adminUsername and password == adminPassword:
+                connect = sqlite3.connect('database.db')
+                cursor = connect.cursor()
+                cursor.execute('SELECT * FROM users')
+
+                data = cursor.fetchall()
                 return render_template('database.html', data=data)
             else:
                 error = 'invalid, please try again'
