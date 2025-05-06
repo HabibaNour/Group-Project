@@ -95,7 +95,14 @@ def register():
         return redirect("/index") 
     else: 
         return render_template('register.html') 
-        
+     
+def requiredLogin(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'username' not in session:
+            return redirect(url_for('login', next = request.url))
+        return f(*args,**kwargs)
+    return decorated_function
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -160,10 +167,12 @@ speed_test = bandwidth_tests(socketio) #creates object passing socketio through
 speed_test.start_speedtests()
 
 @app.route('/speedtest')
+@requiredLogin
 def speedtest():
     return render_template('speedtest.html')
 
 @app.route('/networks')
+@requiredLogin
 def networks():
     ssid_selector.start_SSID_selection()
     return render_template('networks.html')
@@ -177,6 +186,7 @@ def handle_disconnect():
     ssid_selector.stop_SSID_selection()
 
 @app.route('/devices')
+@requiredLogin
 def clients():
     return render_template('devices.html')
 
@@ -188,10 +198,12 @@ def networkHealth():
     return render_template('networkHealth.html')
 #settings and changing user info 
 @app.route('/settingsHome')
+@requiredLogin
 def settingsHome():
     return render_template('settingsHome.html')
 
 @app.route('/changePassword', methods=['GET', 'POST'])
+@requiredLogin
 def changePassword():
     if request.method == 'POST':
         username = request.form['username']
@@ -205,6 +217,7 @@ def changePassword():
             users.commit()
     return render_template('changePassword.html')
 @app.route('/changeEmail')
+@requiredLogin
 def changeEmail():
     if request.method == 'POST':
         username = request.form['username']
@@ -218,9 +231,11 @@ def changeEmail():
             users.commit()
     return render_template('changeEmail.html',methods=['GET', 'POST'])
 @app.route('/alerts')
+@requiredLogin
 def alerts():
     return render_template('alerts.html')
 @app.route('/vulnerabilities')
+@requiredLogin
 def vulnerabilities():
     return render_template('vulnerabilities.html')
 if __name__=='__main__':

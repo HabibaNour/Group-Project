@@ -27,9 +27,9 @@
      </div>
     
     <button> <a href="javascript:void(0);" 
-     onclick="turnOff()"></a>Stop</button>
+     id = "turnOff"></a>Stop</button>
      <button> <a href="javascript:void(0);" 
-      onclick="turnOn()"></a>Stop</button>
+      id="turnOn"></a>Start</button>
  </div>
   </div>
   
@@ -164,7 +164,20 @@
       
       }
     );
-
+    
+    socket.on('connect',() =>{
+        console.log("reconnect");
+    });
+    socket.on('disconnect',() =>{
+      console.log('disconnect');
+    });
+    
+    document.getElementById('turnOn').addEventListener("click",() =>{
+      socket.connect();
+    });
+    document.getElementById('turnOff').addEventListener("click",()=>{
+      socket.disconnect();
+    });
     socket.on('speedtest_results', function(data) {
       document.getElementById("download").innerText = data.download + " Mbps";
       document.getElementById("upload").innerText = data.upload + " Mbps";

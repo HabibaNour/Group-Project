@@ -21,7 +21,7 @@
 <form method="POST" action="{{ url_for('login') }}">
   
   <div class="container1">
-
+    <input type="hidden" value="{{ request.args.get('next', '') }}"/>
     <label for="username"><b>Username</b></label><br>
     <input type="text" placeholder="Enter Username" for="username" id="username" required><br>
       <br>

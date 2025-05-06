@@ -9,12 +9,12 @@
     <title>Home</title>
 </head>
 <body>
-  <h1>Welcome {{username}}</h1>
+  {% include 'nav.html' %}
+  <h1>Welcome {{session.username}}</h1>
 <div class = "homeContainer">
- 
-  <div class = "grid">
-   
-
+  
+  <div class = "grid1">
+    <p>Using the above nav bar you can test the speed of the network, select your netork and see devices connected on network.</p>
   </div>
 
 </div>
