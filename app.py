@@ -15,6 +15,7 @@ from functools import wraps
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
+app.secret_key = "groupProject"
 
 ssid_selector = selecting_SSID(socketio)
 #find_devices = devices(socketio)
@@ -101,6 +102,7 @@ def requiredLogin(f):
     def decorated_function(*args, **kwargs):
         if 'username' not in session:
             return redirect(url_for('login', next = request.url))
+        
         return f(*args,**kwargs)
     return decorated_function
 
@@ -119,7 +121,8 @@ def login():
         user = cursor.fetchone()
 
         if user:
-            return render_template('index.html')
+            session['username']= user['username']
+            return render_template('home.html')
         else:
             error = 'please try again'
             return render_template('login.html', error=error)
@@ -135,6 +138,7 @@ def home():
 
 @app.route('/logout')
 def logout():
+    session.clear()
     return render_template("logout.html")
 
 @app.route('/help')

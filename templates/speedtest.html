@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-{% include 'navLoggedin.html' %}
+{% include 'nav.html' %}
 
 
 
@@ -26,13 +26,15 @@
       <p><strong>Ping:</strong> <span id="ping">Updating</span></p>
      </div>
     
-    <button> <a href="javascript:void(0);" 
-     id = "turnOff"></a>Stop</button>
-     <button> <a href="javascript:void(0);" 
-      id="turnOn"></a>Start</button>
+    
  </div>
   </div>
-  
+<br>
+  <button
+    id = "turnOff">Stop</button>
+    <button id="turnOn">Start</button>
+
+  <br>
   <div class = "flexChart">
   <div class="flexbox">
     <canvas id="myChart"></canvas>
@@ -169,7 +171,7 @@
         console.log("reconnect");
     });
     socket.on('disconnect',() =>{
-      console.log('disconnect');
+      console.log("disconnect");
     });
     
     document.getElementById('turnOn').addEventListener("click",() =>{
