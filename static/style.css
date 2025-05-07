@@ -88,10 +88,6 @@ input[type=text], input[type=password], input[type=email] {
 
   }
 
-  button:hover {
-    background-color: #004d66;
-  }
-
   a:link{
     color:black;
   }
