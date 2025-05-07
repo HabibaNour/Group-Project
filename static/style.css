@@ -88,6 +88,10 @@ input[type=text], input[type=password], input[type=email] {
 
   }
 
+  button:hover {
+    background-color: #004d66;
+  }
+
   a:link{
     color:black;
   }
@@ -304,3 +308,53 @@ canvas{
  border: 2px solid white;
  padding: 30px;
 }
+
+.start_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70px;
+  margin: 40px;
+}
+
+.network_box {
+  width: 100%;
+  max-width: 500px;
+  background-color: #f9f9f9;
+  border: 2px solid #006080;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  text-align: left;
+}
+
+.network_box h2 {
+  color: #006080;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.network_box input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.network_box button {
+  width: 100%;
+  background-color: #006080;
+  color: white;
+  padding: 14px;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.network_box button:hover {
+  background-color: #004d66;
+}
+
