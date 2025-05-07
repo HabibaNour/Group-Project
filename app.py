@@ -157,7 +157,7 @@ def loginAdmin():
             username = request.form.get('username')
             password = request.form.get('password')
 
-            connect = sqlite3.connect('userDatabase1.db')
+            connect = sqlite3.connect('database.db')
             connect.row_factory = sqlite3.Row
             cursor2 = connect.cursor()
 
@@ -166,7 +166,7 @@ def loginAdmin():
             admin = cursor2.fetchone()
 
             if admin:
-                connect = sqlite3.connect('userDatabase1.db')
+                connect = sqlite3.connect('database.db')
                 cursor = connect.cursor()
                 cursor2 = connect.cursor()
 
