@@ -133,7 +133,9 @@ def index():
     return render_template('index.html')
 
 @app.route('/home')
+@requiredLogin
 def home():
+    ssid_selector.start_SSID_selection()
     return render_template("home.html")
 
 @app.route('/logout')
@@ -181,12 +183,7 @@ def speedtest():
 @app.route('/networks')
 @requiredLogin
 def networks():
-    ssid_selector.start_SSID_selection()
     return render_template('networks.html')
-
-@app.route('/test')
-def test():
-    return render_template('test.html') #for testing
 
 @socketio.on('disconnect')
 def handle_disconnect():
