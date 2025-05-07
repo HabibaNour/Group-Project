@@ -89,7 +89,6 @@ def register():
                 charError= "Weak: password should contain at least one special character"
                 return render_template('register.html', error=charError)
 
-
             cursor.execute("INSERT INTO users \
                         (username, email, password, confpassword) VALUES (?,?,?,?)",
                         (username, email, password, confpassword))
