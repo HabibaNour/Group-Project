@@ -122,7 +122,7 @@ def login():
 
         if user:
             session['username']= user['username']
-            return render_template('home.html')
+            return redirect("/home")
         else:
             error = 'please try again'
             return render_template('login.html', error=error)
