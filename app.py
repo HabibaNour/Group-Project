@@ -28,6 +28,7 @@ def contact():
 @app.route('/about')
 def about():
     return render_template("about.html")
+
 def db():
     connect = sqlite3.connect('database.db')
     connect.execute('''CREATE TABLE IF NOT EXISTS users (
@@ -35,10 +36,12 @@ def db():
                             email TEXT  NOT NULL,
                             password TEXT NOT NULL,
                             confpassword TEXT NOT NULL)''')
-                            
+    
+    connect.execute('''CREATE TABLE IF NOT EXISTS admins (
+                            username TEXT PRIMARY KEY NOT NULL,
+                            password TEXT NOT NULL)''')                            
     connect.commit()
     connect.close()
-db()
     
     ##connect2 = sqlite3.connect('database.db')
     ##connect2.execute('''CREATE TABLE IF NOT EXISTS alerts (Timestamp TIMESTAMP, device TEXT not null )''')
@@ -149,26 +152,37 @@ def help():
 
 @app.route('/loginAdmin', methods=['GET', 'POST'])
 def loginAdmin():
-        adminUsername = 'NRHadmins' 
-        adminPassword = 'NRHpassAdmins'
         
         if request.method == 'POST':
             username = request.form.get('username')
             password = request.form.get('password')
 
+            connect = sqlite3.connect('userDatabase1.db')
+            connect.row_factory = sqlite3.Row
+            cursor2 = connect.cursor()
 
-            if username == adminUsername and password == adminPassword:
-                connect = sqlite3.connect('database.db')
+            cursor2.execute('SELECT username FROM admins WHERE username = ? AND password = ?',
+                            (username, password))
+            admin = cursor2.fetchone()
+
+            if admin:
+                connect = sqlite3.connect('userDatabase1.db')
                 cursor = connect.cursor()
+                cursor2 = connect.cursor()
+
                 cursor.execute('SELECT * FROM users')
+                cursor2.execute('SELECT * FROM admins')
 
                 data = cursor.fetchall()
-                return render_template('database.html', data=data)
+                data2 = cursor2.fetchall()
+
+                return render_template('database.html', data=data, data2=data2)
             else:
                 error = 'invalid, please try again'
                 return render_template('loginAdmin.html', error=error)
             
         return render_template('loginAdmin.html')
+
 
 
 #starts the tests when the app starts
