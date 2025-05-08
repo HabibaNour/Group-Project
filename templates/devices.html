@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <title>Connected Clients</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/overhang.min.css" />
+    <script type="text/javascript" src="static/overhang.min.js"></script>
   </head>
 <body>
   {% include 'nav.html' %}
@@ -66,6 +70,13 @@
         all_devices[data.mac] = data;
         sessionStorage.setItem("devices", JSON.stringify(all_devices)); //puts sessionStorage but as a string
         addToList(data);
+
+        $("body").overhang({
+          type: "info",
+          message: "New Device has connected!",
+          duration: 4,
+          upper: true
+        });
       }
     });
   </script>
