@@ -14,14 +14,25 @@
   <div class = "two_box_container">
     <div class = "network_details">
       <h2>You are connected to: <span id = 'selected_SSID'></span></h2>
+      <br>
       <p>Encryption Type: <span id = 'encryption'></span></p>
       <p>Channel: <span id = 'channel'></span></p>
     </div>
     
     <div class = "device_box">
       <h2>Connected Devices: </h2>
+      <br>
       <ul id = "mac-list"></ul>
     </div>
+
+    <div class = "device_info">
+      <h2>Note</h2>
+      <br>
+      <p>If a device shows "Unknown Vendor", it may be an Apple product.</p>
+      <p>Check the device's settings to confirm its identity.</p>
+    </div>
+
+
   </div>
 
   <script>
@@ -30,10 +41,12 @@
 
     //getting network details from sessionStorage
     let selected_SSID = sessionStorage.getItem('selected_SSID');
+    let encryption = sessionStorage.getItem('crypto');
+    let channel = sessionStorage.getItem('channel');
 
     document.getElementById('selected_SSID').innerText = selected_SSID || "No SSID selected"; 
-    //document.getElementById('crypto').innerText = encryption || "Unknown Encryption";
-    //document.getElementById('channel').innerText = channel || "Unknown Channel";
+    document.getElementById('encryption').innerText = encryption || "Unknown Encryption";
+    document.getElementById('channel').innerText = channel || "Unknown Channel";
               
 
     var all_devices = JSON.parse(sessionStorage.getItem("devices")) || {};
