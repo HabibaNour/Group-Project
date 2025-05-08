@@ -272,6 +272,7 @@ input[type=text], input[type=password], input[type=email] {
 .errorMessage{
   text-align: center;
   color: red;
+  font-size: 20px;
 }
 
 .grid{

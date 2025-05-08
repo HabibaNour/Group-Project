@@ -33,7 +33,7 @@ def db():
     connect = sqlite3.connect('database.db')
     connect.execute('''CREATE TABLE IF NOT EXISTS users (
                             username TEXT PRIMARY KEY NOT NULL,
-                            email TEXT  NOT NULL,
+                            email TEXT NOT NULL,
                             password TEXT NOT NULL,
                             confpassword TEXT NOT NULL)''')
     
@@ -63,13 +63,31 @@ def register():
         password = request.form['password']
         confpassword = request.form['confpassword']
 
-        #add users to the database
-        #check of the username is in the database with an error message
+        #check if the username is in the database with an error message
+        connect = sqlite3.connect('database.db')
+        connect.row_factory = sqlite3.Row
+        cursor = connect.cursor()
+
+        cursor.execute('SELECT username FROM users WHERE username = ?',[username])
+        userCheck = cursor.fetchone()
+
+        cursor.execute('SELECT email FROM users WHERE email = ?',[email])
+        emailCheck = cursor.fetchone()
+
+        if userCheck:
+                userError = "This username is taken, please try a different username"
+                return render_template('register.html', error=userError)
+        
+        elif emailCheck:
+            emailError = "This email is registered before, please login"
+            return render_template('register.html', error=emailError)
+
+        #insert users to the database
         with sqlite3.connect("database.db") as users:
             cursor = users.cursor()
 
             if password != confpassword:
-                error="your password and confirmed password need to be the same"
+                error="Your password and confirmed password need to be the same"
                 return render_template('register.html', error=error) 
             
             if len(password) < min_length:
@@ -89,11 +107,11 @@ def register():
                 charError= "Weak: password should contain at least one special character"
                 return render_template('register.html', error=charError)
 
+
             cursor.execute("INSERT INTO users \
                         (username, email, password, confpassword) VALUES (?,?,?,?)",
                         (username, email, password, confpassword))
             users.commit()
-
 
         return redirect("/index") 
     else: 
