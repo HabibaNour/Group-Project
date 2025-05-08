@@ -362,25 +362,7 @@ canvas{
   margin: 40px;
   align-items: start;
 }
-
-.device_box {
-  grid-column: 7 / span 6;
-  background-color: #f9f9f9;
-  border: 2px solid #006080;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-.device_box h2 {
-  color: #006080;
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-
-.network_details {
-  grid-column: 1 / span 5;
+.two_box_container > div {
   background-color: whitesmoke;
   border: 2px solid #006080;
   padding: 30px;
@@ -388,19 +370,32 @@ canvas{
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-.network_details h2 {
-  font-size: 24px;
+.two_box_container > h2 {
   color: #006080;
+  font-size: 24px;
   margin-bottom: 20px;
 }
 
 .network_details p {
   font-size: 18px;
   margin: 10px 0;
-  color: #333;
 }
 
 .network_details span {
   font-weight: bold;
-  color: #000;
 }
+
+.network_details{
+  grid-column: 1/6;
+  grid-row: 1/2;
+}
+ 
+.device_box{
+  grid-column: 7/13;
+  grid-row: 1/4;
+}
+.device_info{
+  margin-top: 20px;
+  grid-row: 3/4;
+  grid-column: 1/6;
+}  
