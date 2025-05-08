@@ -3,36 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>Admin Login</title>
     <link rel="stylesheet" href="/static/style.css">
+
+
 </head>
 <body>
-  {% include 'nav.html' %}
+     {% include 'nav.html' %}
 
-    <h1>Login</h1>
+    <h1>Admin Login</h1>
 
-    <div class="errorMessage">
+<form method="post">
+  
+  <div class="container1">
     {% if error%}
     <p><strong>{{error}}</strong></p>
     {% endif%}
-    </div>
 
-<form method="POST">
-  
-  <div class="container1">
-    <label for="username"><b>Username</b></label><br>
-    <input type="text" placeholder="Enter Username" name="username" for="username" id="username" required><br>
+    <label for="username"><b>Username</b></label>
+    <input type="text" placeholder="Enter Username" name="username" id="username" required><br>
       <br>
 
-    <label for="password"><b>Password</b></label><br>
-    <input type="password" placeholder="Enter Password" name="password" for="password" id="password" required>
-    <i class="fa fa-eye" id="togglePassword" style="margin-left: -30px; cursor: pointer"></i>
-
-    <br>
-
+    <label for="password"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="password" id="password" required><br>
+    
+      <i class="fa fa-eye" id="togglePassword" style="margin-left: -30px; cursor: pointer"></i>
+  
+      <br>
+      <br> 
 
       <script>
+      
         const togglePassword = document.querySelector('#togglePassword');
         const password = document.querySelector('#password')
 
@@ -48,10 +49,7 @@
     <br><br>
 
     <button type="submit">Login</button><br>
-    <p>If you don't have an account please <a href="{{ url_for('register') }}">Register</a></p>
-
-  </div>
-</form>
-
+    </div>
+    </form>
 </body>
 </html>
