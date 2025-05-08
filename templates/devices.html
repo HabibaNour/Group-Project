@@ -40,7 +40,7 @@
 
     function addToList(data) {
         var item = document.createElement('li');
-        item.textContent = `Device MAC: ${data.mac} | Vendor: ${data.vendor}`;
+        item.innerHTML = `&emsp;&emsp;&emsp; Device MAC: ${data.mac}&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Vendor: ${data.vendor}`;
         list.appendChild(item);
     } 
 
