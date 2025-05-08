@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Connected Clients</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
+  </head>
+<body>
+  {% include 'nav.html' %}
+
+<br>
+  <h1>Network Overview</h1>
+
+  <div class = "two_box_container">
+    <div class = "network_details">
+      <h2>You are connected to: <span id = 'selected_SSID'></span></h2>
+      <p>Encryption Type: <span id = 'encryption'></span></p>
+      <p>Channel: <span id = 'channel'></span></p>
+    </div>
+    
+    <div class = "device_box">
+      <h2>Connected Devices: </h2>
+      <ul id = "mac-list"></ul>
+    </div>
+  </div>
+
+  <script>
+    var socket = io.connect("http://localhost:5000");
+    var list = document.getElementById('mac-list');
+
+    //getting network details from sessionStorage
+    let selected_SSID = sessionStorage.getItem('selected_SSID');
+
+    document.getElementById('selected_SSID').innerText = selected_SSID || "No SSID selected"; 
+    //document.getElementById('crypto').innerText = encryption || "Unknown Encryption";
+    //document.getElementById('channel').innerText = channel || "Unknown Channel";
+              
+
+    var all_devices = JSON.parse(sessionStorage.getItem("devices")) || {};
+
+    function addToList(data) {
+        var item = document.createElement('li');
+        item.textContent = `Device MAC: ${data.mac} | Vendor: ${data.vendor}`;
+        list.appendChild(item);
+    } 
+
+    window.onload = function(){
+      Object.values(all_devices).forEach(addToList);
+    }
+    
+    socket.on('new_mac', function(data) {
+      if (!all_devices[data.mac]) {
+        all_devices[data.mac] = data;
+        sessionStorage.setItem("devices", JSON.stringify(all_devices)); //puts sessionStorage but as a string
+        addToList(data);
+      }
+    });
+  </script>
+</body>
+</html>
