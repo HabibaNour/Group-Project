@@ -28,17 +28,20 @@ def contact():
 @app.route('/about')
 def about():
     return render_template("about.html")
+
 def db():
     connect = sqlite3.connect('database.db')
     connect.execute('''CREATE TABLE IF NOT EXISTS users (
                             username TEXT PRIMARY KEY NOT NULL,
-                            email TEXT  NOT NULL,
+                            email TEXT NOT NULL,
                             password TEXT NOT NULL,
                             confpassword TEXT NOT NULL)''')
-                            
+    
+    connect.execute('''CREATE TABLE IF NOT EXISTS admins (
+                            username TEXT PRIMARY KEY NOT NULL,
+                            password TEXT NOT NULL)''')                            
     connect.commit()
     connect.close()
-db()
     
     ##connect2 = sqlite3.connect('database.db')
     ##connect2.execute('''CREATE TABLE IF NOT EXISTS alerts (Timestamp TIMESTAMP, device TEXT not null )''')
@@ -60,13 +63,31 @@ def register():
         password = request.form['password']
         confpassword = request.form['confpassword']
 
-        #add users to the database
-        #check of the username is in the database with an error message
+        #check if the username is in the database with an error message
+        connect = sqlite3.connect('database.db')
+        connect.row_factory = sqlite3.Row
+        cursor = connect.cursor()
+
+        cursor.execute('SELECT username FROM users WHERE username = ?',[username])
+        userCheck = cursor.fetchone()
+
+        cursor.execute('SELECT email FROM users WHERE email = ?',[email])
+        emailCheck = cursor.fetchone()
+
+        if userCheck:
+                userError = "This username is taken, please try a different username"
+                return render_template('register.html', error=userError)
+        
+        elif emailCheck:
+            emailError = "This email is registered before, please login"
+            return render_template('register.html', error=emailError)
+
+        #insert users to the database
         with sqlite3.connect("database.db") as users:
             cursor = users.cursor()
 
             if password != confpassword:
-                error="your password and confirmed password need to be the same"
+                error="Your password and confirmed password need to be the same"
                 return render_template('register.html', error=error) 
             
             if len(password) < min_length:
@@ -91,7 +112,6 @@ def register():
                         (username, email, password, confpassword) VALUES (?,?,?,?)",
                         (username, email, password, confpassword))
             users.commit()
-
 
         return redirect("/index") 
     else: 
@@ -122,7 +142,7 @@ def login():
 
         if user:
             session['username']= user['username']
-            return render_template('home.html')
+            return redirect("/home")
         else:
             error = 'please try again'
             return render_template('login.html', error=error)
@@ -133,7 +153,9 @@ def index():
     return render_template('index.html')
 
 @app.route('/home')
+@requiredLogin
 def home():
+    ssid_selector.start_SSID_selection()
     return render_template("home.html")
 
 @app.route('/logout')
@@ -147,26 +169,37 @@ def help():
 
 @app.route('/loginAdmin', methods=['GET', 'POST'])
 def loginAdmin():
-        adminUsername = 'NRHadmins' 
-        adminPassword = 'NRHpassAdmins'
         
         if request.method == 'POST':
             username = request.form.get('username')
             password = request.form.get('password')
 
+            connect = sqlite3.connect('database.db')
+            connect.row_factory = sqlite3.Row
+            cursor2 = connect.cursor()
 
-            if username == adminUsername and password == adminPassword:
+            cursor2.execute('SELECT username FROM admins WHERE username = ? AND password = ?',
+                            (username, password))
+            admin = cursor2.fetchone()
+
+            if admin:
                 connect = sqlite3.connect('database.db')
                 cursor = connect.cursor()
+                cursor2 = connect.cursor()
+
                 cursor.execute('SELECT * FROM users')
+                cursor2.execute('SELECT * FROM admins')
 
                 data = cursor.fetchall()
-                return render_template('database.html', data=data)
+                data2 = cursor2.fetchall()
+
+                return render_template('database.html', data=data, data2=data2)
             else:
                 error = 'invalid, please try again'
                 return render_template('loginAdmin.html', error=error)
             
         return render_template('loginAdmin.html')
+
 
 
 #starts the tests when the app starts
@@ -181,12 +214,7 @@ def speedtest():
 @app.route('/networks')
 @requiredLogin
 def networks():
-    ssid_selector.start_SSID_selection()
     return render_template('networks.html')
-
-@app.route('/test')
-def test():
-    return render_template('test.html') #for testing
 
 @socketio.on('disconnect')
 def handle_disconnect():

@@ -1,25 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, intial-scale-1,0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    
-   
-    <title>Home</title>
-</head>
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, intial-scale-1,0">
+      <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+      <title>Home</title>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+      <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+      <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+      <link rel="stylesheet" type="text/css" href="static/overhang.min.css" />
+      <script type="text/javascript" src="static/overhang.min.js"></script>
+  </head>
 <body>
   {% include 'nav.html' %}
-  <h1>Welcome {{session.username}}</h1>
-<div class = "homeContainer">
   
-  <div class = "grid1">
-    <p>Using the above nav bar you can test the speed of the network, select your netork and see devices connected on network.</p>
+  <h1>Welcome {{username}}</h1>
+
+  <div class = "start_container">
+    <div class = "network_box">
+      <h2>Please Select your Network<h2>
+      <input type = "text" id = "ssid_input" placeholder = "Enter SSID" list = "ssid_list">
+      <datalist id = "ssid_list"></datalist>
+      <button onclick = "set_SSID()">Select</button>
+    <br>
+    <br>
+
+      <h2>Network Details</h2>
+      <p>SSID: <span id = "ssid"></span></p>
+      <p>Encryption: <span id = "crypto"></span></p>
+      <p>Channel: <span id = "channel"></span></p>
+      <p>BSSID: <span id = "bssid"></span></p>
+    </div>
   </div>
 
-</div>
+  <script>
+    var socket = io.connect("http://localhost:5000");
+    var selected_SSID = null;
+    var all_networks = {};
 
+    socket.on('network_info', function(data) {
+        all_networks[data.ssid] = data;
+        update_dropdown();
+    });
 
+    function update_dropdown() {
+        let ssid_list = document.getElementById("ssid_list");
+        ssid_list.innerHTML = ""; //clears 
+        for (let ssid in all_networks) {
+            let option = document.createElement("option");
+            option.value = ssid;
+            ssid_list.appendChild(option);
+        }
+    }
+
+    function set_SSID() {
+        selected_SSID = document.getElementById("ssid_input").value;
+        if(selected_SSID in all_networks) {
+            sessionStorage.setItem('selected_SSID', selected_SSID); //saves until browser exits
+
+            document.getElementById("ssid").innerText = selected_SSID;
+            document.getElementById("crypto").innerText = all_networks[selected_SSID].crypto;
+            document.getElementById("channel").innerText = all_networks[selected_SSID].channel;
+            document.getElementById("bssid").innerText = all_networks[selected_SSID].bssid;
+        
+            socket.emit('home_SSID',{'ssid': selected_SSID, 'channel' : all_networks[selected_SSID].channel, 'bssid' : all_networks[selected_SSID].bssid})
+
+        } 
+        else{
+            $("body").overhang({
+                type: "error",
+                message: "Whoops! Incorrect Network Name!",
+                closeConfirm: true
+                });
+        }
+    }
+  </script>
 
 </body>
 </html> 
