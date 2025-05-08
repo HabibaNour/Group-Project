@@ -13,12 +13,15 @@
 
     <h1>Admin Login</h1>
 
+    <div class="errorMessage">
+      {% if error%}
+      <p><strong>{{error}}</strong></p>
+      {% endif%}
+      </div>
+
 <form method="post">
   
   <div class="container1">
-    {% if error%}
-    <p><strong>{{error}}</strong></p>
-    {% endif%}
 
     <label for="username"><b>Username</b></label><br>
     <input type="text" placeholder="Enter Username" name="username" for="username" id="username" required><br>
