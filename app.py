@@ -212,18 +212,45 @@ def settingsHome():
 @app.route('/changePassword', methods=['GET', 'POST'])
 @requiredLogin
 def changePassword():
+    min_length = 8
+    uppercase_regex = re.compile(r'[A-Z]')
+    lowercase_regex = re.compile(r'[a-z]')
+    digit_regex = re.compile(r'\d')
+    special_char_regex = re.compile(r'[!@#$%^&*()_+{}[\]:;<>,.?~\\/-]')
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         newPassword =request.form['newPassword']
+        confpassword = request.form['confpassword']
+
 
         with sqlite3.connect("database.db") as users:
             cursor = users.cursor()
-            cursor.execute("UPDATE users  SET password =  (?) WHERE username = (?) AND password = (?)",
-                        (newPassword,username,password))
+            cursor.execute("UPDATE users  SET password =  (?), confpassword = (?) WHERE username = (?) AND password = (?)",
+                        (newPassword,confpassword,username, password))
+            if newPassword != confpassword:
+                error="your password and confirmed password need to be the same"
+                return render_template('changePassword.html', error=error) 
+            
+            if len(newPassword) < min_length:
+                LenError="Weak: password should be at least 8 characters"
+                return render_template('changePassword.html', error=LenError)
+            
+            elif not uppercase_regex.search(newPassword) or not lowercase_regex.search(newPassword):
+                caseError= "Weak: password should contain at least one upper and lower cases letter"
+                return render_template('changePassword.html', error=caseError)
+
+            elif not digit_regex.search(newPassword):
+                digitError= "Weak: password should contain at least one number"
+                return render_template('changePassword.html', error=digitError)
+
+                        
+            elif not special_char_regex.search(newPassword):
+                charError= "Weak: password should contain at least one special character"
+                return render_template('changePassword.html', error=charError)
             users.commit()
     return render_template('changePassword.html')
-@app.route('/changeEmail')
+@app.route('/changeEmail',methods=['GET', 'POST'])
 @requiredLogin
 def changeEmail():
     if request.method == 'POST':
