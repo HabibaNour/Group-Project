@@ -355,3 +355,52 @@ canvas{
   background-color: #004d66;
 }
 
+.two_box_container {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 20px;
+  margin: 40px;
+  align-items: start;
+}
+
+.device_box {
+  grid-column: 7 / span 6;
+  background-color: #f9f9f9;
+  border: 2px solid #006080;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.device_box h2 {
+  color: #006080;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+
+.network_details {
+  grid-column: 1 / span 5;
+  background-color: whitesmoke;
+  border: 2px solid #006080;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.network_details h2 {
+  font-size: 24px;
+  color: #006080;
+  margin-bottom: 20px;
+}
+
+.network_details p {
+  font-size: 18px;
+  margin: 10px 0;
+  color: #333;
+}
+
+.network_details span {
+  font-weight: bold;
+  color: #000;
+}
