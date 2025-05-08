@@ -27,24 +27,17 @@
     <label for="password"><b>Password</b></label>
     <input type="password" placeholder="Enter Password" name="password" id="password" required><br>
     
-      <i class="fa fa-eye" id="togglePassword" style="margin-left: -30px; cursor: pointer"></i>
-  
-      <br>
-      <br> 
+      <input type="checkbox" onclick="showPassword()">Show Password
 
       <script>
-      
-        const togglePassword = document.querySelector('#togglePassword');
-        const password = document.querySelector('#password')
-
-        togglePassword.addEventListener('click', function (e){
-          const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-
-          password.setAttribute('type', type);
-          this.classList.toggle('fa-eye-slash');
-          this.classList.toggle('fa-eye')
-        });
-
+      function showPassword() {
+        var x = document.getElementById("password");
+        if (x.type === "password") {
+          x.type = "text";
+        } else {
+          x.type = "password";
+        }
+      }
       </script>
     <br><br>
 
