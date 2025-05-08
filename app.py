@@ -10,7 +10,7 @@ from flask_socketio import SocketIO
 from werkzeug.security import generate_password_hash
 from src.broadbandtests import bandwidth_tests #imports class
 from src.SSID import selecting_SSID
-#from src.finddevices import devices #fixing error, will upload on sat.
+from src.finddevices import devices #fixing error, will upload on sat.
 from functools import wraps 
 
 app = Flask(__name__)
@@ -18,8 +18,8 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 app.secret_key = "groupProject"
 
 ssid_selector = selecting_SSID(socketio)
-#find_devices = devices(socketio)
-#find_devices.handle_socket()
+find_devices = devices(socketio)
+find_devices.handle_socket()
 
 @app.route('/contact')
 def contact():
@@ -215,6 +215,11 @@ def speedtest():
 @requiredLogin
 def networks():
     return render_template('networks.html')
+
+@app.route('/devices')
+@requiredLogin
+def devices():
+    return render_template('devices.html')
 
 @socketio.on('disconnect')
 def handle_disconnect():
