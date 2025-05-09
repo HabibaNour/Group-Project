@@ -12,10 +12,15 @@ from src.broadbandtests import bandwidth_tests #imports class
 from src.SSID import selecting_SSID
 from src.finddevices import devices #fixing error, will upload on sat.
 from functools import wraps 
+from flask_bcrypt import Bcrypt
+
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
 app.secret_key = "groupProject"
+
+bcrypt = Bcrypt(app)
+
 
 ssid_selector = selecting_SSID(socketio)
 find_devices = devices(socketio)
@@ -86,31 +91,35 @@ def register():
         with sqlite3.connect("database.db") as users:
             cursor = users.cursor()
 
+            hash_password = bcrypt.generate_password_hash(password).decode('utf-8')
+            bcrypt.generate_password_hash(hash_password)
+            
+
             if password != confpassword:
                 error="Your password and confirmed password need to be the same"
                 return render_template('register.html', error=error) 
             
-            if len(password) < min_length:
+            if len(password ) < min_length:
                 LenError="Weak: password should be at least 8 characters"
                 return render_template('register.html', error=LenError)
             
-            elif not uppercase_regex.search(password) or not lowercase_regex.search(password):
+            elif not uppercase_regex.search(password ) or not lowercase_regex.search(password ):
                 caseError= "Weak: password should contain at least one upper and lower cases letter"
                 return render_template('register.html', error=caseError)
 
-            elif not digit_regex.search(password):
+            elif not digit_regex.search(password ):
                 digitError= "Weak: password should contain at least one number"
                 return render_template('register.html', error=digitError)
 
                         
-            elif not special_char_regex.search(password):
+            elif not special_char_regex.search(password ):
                 charError= "Weak: password should contain at least one special character"
                 return render_template('register.html', error=charError)
 
 
             cursor.execute("INSERT INTO users \
                         (username, email, password, confpassword) VALUES (?,?,?,?)",
-                        (username, email, password, confpassword))
+                        (username, email, hash_password, hash_password))
             users.commit()
 
         return redirect("/index") 
@@ -132,15 +141,15 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
 
-        connect = sqlite3.connect('database.db')
+    
+        connect = sqlite3.connect('userDatabase1.db')
         connect.row_factory = sqlite3.Row
         cursor = connect.cursor()
 
-        cursor.execute('SELECT username FROM users WHERE username = ? AND password = ?',
-                        (username, password))
+        cursor.execute('SELECT * FROM users WHERE username = ?',[username])
         user = cursor.fetchone()
 
-        if user:
+        if user and bcrypt.check_password_hash(user['password'], password):
             session['username']= user['username']
             return redirect("/home")
         else:
