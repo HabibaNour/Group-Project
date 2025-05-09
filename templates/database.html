@@ -28,13 +28,17 @@
           
           <table style="width:100%"> 
             <tr> 
-              <th>Username</th> 
-              <th>password</th> 
+              <th>Admin Name</th> 
+              <th>Admin Email</th> 
+              <th>Admin Password</th> 
+              <th>Admin ConfPassword</th> 
             </tr> 
             {%for admin in data2%} 
                <tr> 
-                 <td>{{admin[0]}}</td> 
-                 <td>{{admin[1]}}</td> 
+                <td>{{admin[0]}}</td> 
+                <td>{{admin[1]}}</td> 
+                <td>{{admin[2]}}</td> 
+                <td>{{admin[3]}}</td> 
                 </tr> 
             {%endfor%} 
           </table>     

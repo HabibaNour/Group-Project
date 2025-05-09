@@ -219,10 +219,10 @@ def loginAdmin():
             connect.row_factory = sqlite3.Row
             cursor2 = connect.cursor()
 
-            cursor2.execute('SELECT * FROM admins WHERE username = ?',[username])
+            cursor2.execute('SELECT * FROM admins WHERE adminUsername = ?',[username])
             admin = cursor2.fetchone()
 
-            if admin and bcrypt.check_password_hash(admin['password'], password):
+            if admin and bcrypt.check_password_hash(admin['adminPassword'], password):
                 connect = sqlite3.connect('database.db')
                 cursor = connect.cursor()
                 cursor2 = connect.cursor()
