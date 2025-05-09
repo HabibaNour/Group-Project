@@ -186,11 +186,10 @@ def loginAdmin():
             connect.row_factory = sqlite3.Row
             cursor2 = connect.cursor()
 
-            cursor2.execute('SELECT username FROM admins WHERE username = ? AND password = ?',
-                            (username, password))
+            cursor2.execute('SELECT * FROM admins WHERE username = ?',[username])
             admin = cursor2.fetchone()
 
-            if admin:
+            if admin and bcrypt.check_password_hash(admin['password'], password):
                 connect = sqlite3.connect('database.db')
                 cursor = connect.cursor()
                 cursor2 = connect.cursor()
