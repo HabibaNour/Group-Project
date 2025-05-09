@@ -180,7 +180,31 @@ def help():
 @app.route('/adminForm', methods=['GET', 'POST'])
 def adminForm():
 
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+        confpassword = request.form['confpassword']
 
+        #insert users to the database
+        with sqlite3.connect("database.db") as admins:
+            cursor = admins.cursor()
+
+            hash_password = bcrypt.generate_password_hash(password).decode('utf-8')
+            bcrypt.generate_password_hash(hash_password)
+            
+
+            if password != confpassword:
+                error="Your password and confirmed password need to be the same"
+                return render_template('register.html', error=error) 
+
+            cursor.execute("INSERT INTO admins \
+                        (adminUsername, adminEmail, adminPassword, adminConfPassword) VALUES (?,?,?,?)",
+                        (username, email, hash_password, hash_password))
+            admins.commit()
+
+        return redirect("/loginAdmin") 
+    else: 
         return render_template('adminForm.html') 
 
 
