@@ -52,7 +52,6 @@ def db():
     ##connect2.execute('''CREATE TABLE IF NOT EXISTS alerts (Timestamp TIMESTAMP, device TEXT not null )''')
 
     
-
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -142,7 +141,7 @@ def login():
         password = request.form.get('password')
 
     
-        connect = sqlite3.connect('userDatabase1.db')
+        connect = sqlite3.connect('database.db')
         connect.row_factory = sqlite3.Row
         cursor = connect.cursor()
 
