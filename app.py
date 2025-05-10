@@ -292,40 +292,55 @@ def changePassword():
         password = request.form['password']
         newPassword =request.form['newPassword']
         confpassword = request.form['confpassword']
+        connect = sqlite3.connect('database.db')
+        connect.row_factory = sqlite3.Row
+        cursor = connect.cursor()
+        cursor.execute('SELECT * FROM users WHERE username = ?',[username])
+        user = cursor.fetchone()
         
-        with sqlite3.connect("database.db") as users:
-            hash_password = bcrypt.generate_password_hash(newPassword).decode('utf-8')
-            bcrypt.generate_password_hash(hash_password)
-            old_password = bcrypt.generate_password_hash(password).decode('utf-8')
-            bcrypt.generate_password_hash(old_password)
-            cursor = users.cursor()
-            cursor.execute("UPDATE users  SET password =  (?), confpassword = (?) WHERE username = (?) AND password = (?)",
-                        (hash_password,hash_password,username, old_password))
+       
+        if user and bcrypt.check_password_hash(user['password'], password) == True:
             
-            if old_password != password:
-                error = "old password incorrect"
-                return render_template('changePassword.html', error=error) 
-            if newPassword != confpassword:
-                error="your password and confirmed password need to be the same"
-                return render_template('changePassword.html', error=error) 
-            
-            if len(newPassword) < min_length:
-                LenError="Weak: password should be at least 8 characters"
-                return render_template('changePassword.html', error=LenError)
-            
-            elif not uppercase_regex.search(newPassword) or not lowercase_regex.search(newPassword):
-                caseError= "Weak: password should contain at least one upper and lower cases letter"
-                return render_template('changePassword.html', error=caseError)
-
-            elif not digit_regex.search(newPassword):
-                digitError= "Weak: password should contain at least one number"
-                return render_template('changePassword.html', error=digitError)
-
+            with sqlite3.connect("database.db") as users:
+                hash_password = bcrypt.generate_password_hash(newPassword).decode('utf-8')
+                bcrypt.generate_password_hash(hash_password)
+                cursor2 = users.cursor()
+                
+                if user['username'] != username:
+                    errorCode = "username does not exist"
+                    return render_template('changePassword.html',errorCode)
+                    
+                if user['password'] != password:
+                    error = "old password incorrect"
+                    return render_template('changePassword.html', error=error) 
+                if newPassword != confpassword:
+                    error="your password and confirmed password need to be the same"
+                    return render_template('changePassword.html', error=error) 
                         
-            elif not special_char_regex.search(newPassword):
-                charError= "Weak: password should contain at least one special character"
-                return render_template('changePassword.html', error=charError)
-            users.commit()
+                if len(newPassword) < min_length:
+                    LenError="Weak: password should be at least 8 characters"
+                    return render_template('changePassword.html', error=LenError)
+                        
+                elif not uppercase_regex.search(newPassword) or not lowercase_regex.search(newPassword):
+                    caseError= "Weak: password should contain at least one upper and lower cases letter"
+                    return render_template('changePassword.html', error=caseError)
+
+                elif not digit_regex.search(newPassword):
+                    digitError= "Weak: password should contain at least one number"
+                    return render_template('changePassword.html', error=digitError)
+
+                                    
+                elif not special_char_regex.search(newPassword):
+                    charError= "Weak: password should contain at least one special character"
+                    return render_template('changePassword.html', error=charError)
+                cursor2.execute("UPDATE users  SET password =  (?), confpassword = (?) WHERE username = (?) AND password = (?)",
+                                    (hash_password,hash_password,username, user['password']))
+                users.commit()
+        else:
+            error = 'please try again'
+            return render_template('changePassword.html', error=error)
+        
+            
     return render_template('changePassword.html')
 
 @app.route('/changeEmail',methods=['GET', 'POST'])
