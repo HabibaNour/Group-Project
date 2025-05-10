@@ -58,6 +58,8 @@
         selected_SSID = document.getElementById("ssid_input").value;
         if(selected_SSID in all_networks) {
             sessionStorage.setItem('selected_SSID', selected_SSID); //saves until browser exits
+            sessionStorage.setItem('crypto', all_networks[selected_SSID].crypto);
+            sessionStorage.setItem('channel', all_networks[selected_SSID].channel)
 
             document.getElementById("ssid").innerText = selected_SSID;
             document.getElementById("crypto").innerText = all_networks[selected_SSID].crypto;
@@ -65,6 +67,11 @@
             document.getElementById("bssid").innerText = all_networks[selected_SSID].bssid;
         
             socket.emit('home_SSID',{'ssid': selected_SSID, 'channel' : all_networks[selected_SSID].channel, 'bssid' : all_networks[selected_SSID].bssid})
+
+            //redirect
+            setTimeout(() => {
+                window.location.href = "/network";
+            }, 200); //200ms delay
 
         } 
         else{
