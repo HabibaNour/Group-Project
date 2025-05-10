@@ -295,12 +295,19 @@ def changePassword():
         password = request.form['password']
         newPassword =request.form['newPassword']
         confpassword = request.form['confpassword']
-
-
+        
         with sqlite3.connect("database.db") as users:
+            hash_password = bcrypt.generate_password_hash(newPassword).decode('utf-8')
+            bcrypt.generate_password_hash(hash_password)
+            old_password = bcrypt.generate_password_hash(password).decode('utf-8')
+            bcrypt.generate_password_hash(old_password)
             cursor = users.cursor()
             cursor.execute("UPDATE users  SET password =  (?), confpassword = (?) WHERE username = (?) AND password = (?)",
-                        (newPassword,confpassword,username, password))
+                        (hash_password,hash_password,username, old_password))
+            
+            if old_password != password:
+                error = "old password incorrect"
+                return render_template('changePassword.html', error=error) 
             if newPassword != confpassword:
                 error="your password and confirmed password need to be the same"
                 return render_template('changePassword.html', error=error) 
