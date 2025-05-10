@@ -289,7 +289,6 @@ def changePassword():
     special_char_regex = re.compile(r'[!@#$%^&*()_+{}[\]:;<>,.?~\\/-]')
     if request.method == 'POST':
         username = request.form['username']
-        password = request.form['password']
         newPassword =request.form['newPassword']
         confpassword = request.form['confpassword']
 
@@ -297,16 +296,18 @@ def changePassword():
         connect.row_factory = sqlite3.Row
         cursor = connect.cursor()
         
-        cursor.execute('SELECT * FROM users WHERE username = ?',[username])
+        cursor.execute('SELECT * FROM users WHERE username = ?', [username])
         user = cursor.fetchone()
        
+
             
         with sqlite3.connect("database.db") as users:
             hash_password = bcrypt.generate_password_hash(newPassword).decode('utf-8')
             bcrypt.generate_password_hash(hash_password)
+
             cursor2 = users.cursor()
                 
-            if user['username'] != username:
+            if user == None:
                 errorCode = "username does not exist"
                 return render_template('changePassword.html',error=errorCode)
                     
@@ -331,8 +332,8 @@ def changePassword():
             elif not special_char_regex.search(newPassword):
                 charError= "Weak: password should contain at least one special character"
                 return render_template('changePassword.html', error=charError)
-            cursor2.execute("UPDATE users  SET password =  (?), confpassword = (?) WHERE username = (?) AND password = (?)",
-                                    (hash_password,hash_password,username, user['password']))
+            cursor2.execute("UPDATE users  SET password =  (?), confpassword = (?) WHERE username = (?)",
+                                    (hash_password,hash_password,username))
             users.commit()
 
     return render_template('changePassword.html')
@@ -349,17 +350,18 @@ def changeEmail():
         cursor2 = connect.cursor()
 
         cursor2.execute('SELECT * FROM users WHERE username = ?',[username])
-        user = cursor.fetchone()
-        if user:
-            with sqlite3.connect("database.db") as users:
-                if user['email'] != email:
-                    errorEmail = "Incorrect email"
-                    return render_template('changeEmail.html',error=errorEmail)
-                if user['username'] != username:
-                    userError = "Incorrect username"
-                    return render_template('changeEmail.html', error=userError)
-                cursor = users.cursor()
-                cursor.execute("UPDATE users  SET email =  (?) WHERE username = (?) AND email = (?)",
+        user = cursor2.fetchone()
+        
+        with sqlite3.connect("database.db") as users:
+            if user == None:
+                userError = "Incorrect username"
+                return render_template('changeEmail.html', error=userError)
+            if user['email'] != email:
+                errorEmail = "Incorrect email"
+                return render_template('changeEmail.html',error=errorEmail)
+              
+            cursor = users.cursor()
+            cursor.execute("UPDATE users  SET email =  (?) WHERE username = (?) AND email = (?)",
                             (newEmail,username,email))
             users.commit()
     return render_template('changeEmail.html',methods=['GET', 'POST'])
