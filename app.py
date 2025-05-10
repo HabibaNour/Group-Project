@@ -126,7 +126,7 @@ def register():
         return redirect("/index") 
     else: 
         return render_template('register.html') 
-     
+ # will lock pages so need to be logged in    
 def requiredLogin(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -299,7 +299,6 @@ def changePassword():
         
         cursor.execute('SELECT * FROM users WHERE username = ?',[username])
         user = cursor.fetchone()
-        
        
             
         with sqlite3.connect("database.db") as users:
@@ -336,6 +335,11 @@ def changePassword():
                                     (hash_password,hash_password,username, user['password']))
             users.commit()
 
+<<<<<<< HEAD
+=======
+        
+            
+>>>>>>> 8d6157972131a60c1bdef195d3479a5330d87d81
     return render_template('changePassword.html')
 
 @app.route('/changeEmail',methods=['GET', 'POST'])
@@ -345,11 +349,23 @@ def changeEmail():
         username = request.form['username']
         email = request.form['email']
         newEmail =request.form['newEmail']
+        connect = sqlite3.connect('database.db')
+        connect.row_factory = sqlite3.Row
+        cursor2 = connect.cursor()
 
-        with sqlite3.connect("database.db") as users:
-            cursor = users.cursor()
-            cursor.execute("UPDATE users  SET email =  (?) WHERE username = (?) AND email = (?)",
-                        (newEmail,username,email))
+        cursor2.execute('SELECT * FROM users WHERE username = ?',[username])
+        user = cursor.fetchone()
+        if user:
+            with sqlite3.connect("database.db") as users:
+                if user['email'] != email:
+                    errorEmail = "Incorrect email"
+                    return render_template('changeEmail.html',error=errorEmail)
+                if user['username'] != username:
+                    userError = "Incorrect username"
+                    return render_template('changeEmail.html', error=userError)
+                cursor = users.cursor()
+                cursor.execute("UPDATE users  SET email =  (?) WHERE username = (?) AND email = (?)",
+                            (newEmail,username,email))
             users.commit()
     return render_template('changeEmail.html',methods=['GET', 'POST'])
 

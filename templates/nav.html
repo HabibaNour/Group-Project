@@ -79,12 +79,15 @@
     {%if session['username']  %}
     <div class="topnav" id="myTopnav">
         <a href="{{ url_for('home') }}"><i class="fa fa-fw fa-home"></i>Home</a>
-        <a href="{{ url_for('devices') }}"><i class="fa-fw"></i>Network</a>
-        <a href="{{ url_for('networkHealth') }}"><i class="fa-fw"></i>Network Health</a>
-        <a href="{{ url_for('speedtest') }}"><i class="fa-fw"></i>Speed test</a>
-        <a href="{{ url_for('alerts') }}"><i class="fa-fw"></i>Alerts</a>
-        <a href="{{ url_for('settingsHome') }}"><i class="fa-fw"></i>Settings</a>
-        <a href="{{url_for('logout')}}"><i class="fa-fw"></i>Logout </a>
+        <a href="{{ url_for('networks') }}"><i class="fa fa-wifi"></i>Networks</a>
+        <a href="{{ url_for('devices') }}"><i class="fa fa-desktop"></i>Devices</a>
+        <a href="{{ url_for('speedtest') }}"><i class="fa fa-tachometer"></i>Speed test</a>
+        <a href="{{ url_for('alerts') }}"><i class="fa fa-exclamation-circle"></i>Alerts</a>
+        <a href="{{ url_for('settingsHome') }}"><i class="fa fa-cog"></i>Settings</a>
+        <a href="{{ url_for('contact') }}"><i class="fa fa-fw fa-envelope"></i>Contact</a>
+        <a href="{{ url_for('about') }}"><i class="fa fa-user"></i>About us</a>
+        <a href="{{ url_for('help') }}"><i class="fa fa-question-circle"></i>Help</a>
+            <a href="{{url_for('logout')}}"><i class="fa fa-sign-out"></i>Logout </a>
         
     
         <div class="mbotton" id="mbotton">
@@ -98,15 +101,10 @@
     <a href="{{ url_for('register') }}"><i class="fa fa-user-plus"></i>Register</a>
     <a href="{{ url_for('login') }}"><i class="fa fa-sign-in"></i>Login</a>
     <a href="{{ url_for('contact') }}"><i class="fa fa-fw fa-envelope"></i>Contact</a>
-    <a href="{{ url_for('about') }}"><i class="fa fa-user-o"></i>About us</a>
+    <a href="{{ url_for('about') }}"><i class="fa fa-user"></i>About us</a>
     <a href="{{ url_for('help') }}"><i class="fa fa-question-circle"></i>Help</a>
 
     
-    <div class="mbotton" id="mbotton">
-    <a href="javascript:void(0)" id="theme-toggle"><i class="fa fa-moon-o"></i>Mode</a>
-    </div>
-</div>
-   
     {% endif %}
     <script>
 
