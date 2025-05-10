@@ -10,7 +10,7 @@ from flask_socketio import SocketIO
 from werkzeug.security import generate_password_hash
 from src.broadbandtests import bandwidth_tests #imports class
 from src.SSID import selecting_SSID
-from src.finddevices import devices #fixing error, will upload on sat.
+from src.finddevices import devices 
 from functools import wraps 
 from flask_bcrypt import Bcrypt
 
@@ -256,7 +256,7 @@ def speedtest():
 def networks():
     return render_template('networks.html')
 
-@app.route('/devices')
+@app.route('/network')
 @requiredLogin
 def devices():
     return render_template('devices.html')
@@ -265,17 +265,14 @@ def devices():
 def handle_disconnect():
     ssid_selector.stop_SSID_selection()
 
-@app.route('/devices')
-@requiredLogin
-def clients():
-    return render_template('devices.html')
-
 @app.route('/bandwidth')
 def bandwidth():
-    return render_template('bandwidth.html')
+    return render_template('bandwidth.html') #not used?
+
 @app.route('/networkHealth')
 def networkHealth():
-    return render_template('networkHealth.html')
+    return render_template('networkHealth.html') #not used?
+
 #settings and changing user info 
 @app.route('/settingsHome')
 @requiredLogin
@@ -323,6 +320,7 @@ def changePassword():
                 return render_template('changePassword.html', error=charError)
             users.commit()
     return render_template('changePassword.html')
+
 @app.route('/changeEmail',methods=['GET', 'POST'])
 @requiredLogin
 def changeEmail():
@@ -337,15 +335,17 @@ def changeEmail():
                         (newEmail,username,email))
             users.commit()
     return render_template('changeEmail.html',methods=['GET', 'POST'])
+
 @app.route('/alerts')
 @requiredLogin
 def alerts():
     return render_template('alerts.html')
+
 @app.route('/vulnerabilities')
 @requiredLogin
 def vulnerabilities():
-    return render_template('vulnerabilities.html')
-if __name__=='__main__':
+    return render_template('vulnerabilities.html') #not used?
     
+if __name__=='__main__':
     socketio.run(app)
     
