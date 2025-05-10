@@ -335,11 +335,6 @@ def changePassword():
                                     (hash_password,hash_password,username, user['password']))
             users.commit()
 
-<<<<<<< HEAD
-=======
-        
-            
->>>>>>> 8d6157972131a60c1bdef195d3479a5330d87d81
     return render_template('changePassword.html')
 
 @app.route('/changeEmail',methods=['GET', 'POST'])
