@@ -30,9 +30,9 @@
  </div>
   </div>
 <br>
-  <button
-    id = "turnOff">Stop</button>
-    <button id="turnOn">Start</button>
+  <button id="turnOn">Start</button>
+  <button id = "turnOff">Stop</button>
+    
 
   <br>
   <div class = "flexChart">
@@ -167,6 +167,7 @@
       }
     );
     
+    //buttons to stop and start speed test
     socket.on('connect',() =>{
         console.log("reconnect");
     });
