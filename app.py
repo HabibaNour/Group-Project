@@ -126,7 +126,7 @@ def register():
         return redirect("/index") 
     else: 
         return render_template('register.html') 
-     
+ # will lock pages so need to be logged in    
 def requiredLogin(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
