@@ -10,22 +10,24 @@
 <body>
     {% include 'nav.html' %}
     
-    <div class=" homeContainer">
-        <div class = "grid1">
-            <h1>About </h1>
-        <p>This site can be used to monitor your own network once logged in. </p>
-    <p>Aspects that can be monitored include:</p>
-    <ul>
-        <li>Bandwidth</li>
-        <li>Network Health</li>
-        <li>Networks</li>
-        <li>Speed tests</li>
-        <li>Vulnerabilites</li>
-        <li>Alerts</li>
-    </ul>
-   <p>If you wish to contact us, <a href="{{url_for('contact')}}">Click here</a></p>
-        
+    
+        <div class = "aboutus">
+
+            <h1>About Us </h1><br>
+
+            <p>This site can be used to monitor your own network once logged in. </p><br>
+            <p>Aspects that can be monitored include:</p>
+            <ul>
+                <li>Bandwidth</li>
+                <li>Networks</li>
+                <li>Speed tests</li>
+                <li>Devices</li>
+                <li>Alerts</li>
+            </ul><br>
+        <p>If you wish to contact us, <a href="{{url_for('contact')}}">Click here</a></p>
+                
 
     </div>
+    
 </body>
 </html>

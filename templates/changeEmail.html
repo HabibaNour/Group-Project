@@ -10,6 +10,14 @@
 <body>
     {% include 'nav.html' %}  
     <h1>Change Email</h1>
+
+    <div class="errorMessage">
+      {% if error%}
+      <p><strong>{{errorEmail}}</strong></p>
+      <p><strong>{{userError}}</strong></p>
+      {% endif%}
+      </div>
+
    <form method="POST" action="{{ url_for('changeEmail') }}">
 
   <div class="container1">

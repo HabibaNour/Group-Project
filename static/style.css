@@ -399,3 +399,9 @@ canvas{
   grid-row: 3/4;
   grid-column: 1/6;
 }  
+
+.aboutus{
+  text-align: center;
+  border: #006080;
+  font-size: 20px;
+}
