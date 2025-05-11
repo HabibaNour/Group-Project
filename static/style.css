@@ -410,6 +410,55 @@ canvas{
   margin: 10px;
 }
 
+.alert_table {
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 25px 0;
+  min-width: 800px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.alert_table thead tr {
+  background-color: #006080;
+  color: whitesmoke;
+  text-align: left;
+  font-weight: bold;
+}
+.alert_table th, .alert_table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd;
+  font-size: 16px;
+}
+
+/*followed online tutorial on how to round table corners*/
+.alert_table th:not(:last-child), .alert_table td:not(:last-child) {
+  border-right: none;
+}
+
+/*top corners */
+.alert_table thead tr:first-child th:first-child {
+  border-top-left-radius: 12px;
+}
+.alert_table thead tr:first-child th:last-child {
+  border-top-right-radius: 12px;
+}
+
+/*bottom corners */
+.alert_table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 12px;
+}
+.alert_table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 12px;
+}
+.dark-theme .network_box,
+.dark-theme .two_box_container,
+.dark-theme .start_container {
+  color: black;
+}
+
+
 .aboutus > ul{
   padding: 1px;
   margin: 10px;
