@@ -2,10 +2,11 @@ from scapy.all import *
 import os
 import time
 from threading import Thread
-from flask import Flask, render_template
+from flask import Flask
 from flask_socketio import SocketIO
 import csv
 import requests
+from datetime import datetime
 
 class devices:
     def __init__(self, socketio):
@@ -15,6 +16,7 @@ class devices:
         self.channel = None
         self.selected_MAC = None
         self.handle_socket()
+        self.current_time = datetime.now()
 
     def handle_socket(self):
         @self.socketio.on('home_SSID') 
@@ -22,8 +24,6 @@ class devices:
             self.selected_SSID = data['ssid']
             self.channel = data['channel']
             self.selected_MAC = data['bssid']
-
-            print(f'received SSID from user: {self.selected_SSID} and {self.channel} and {self.selected_MAC}') #testing
             
             Thread(target = self.run_airodump, daemon = True).start()
             Thread(target = self.read_csv, daemon = True).start()
@@ -60,13 +60,9 @@ class devices:
                 return
             time.sleep(1)
 
-        print(f"found: {csv_file}. looking for macs...\n") #testing
-
-
-
         while True:
             try:
-                with open(csv_file, mode='r', encoding='utf-8', errors='ignore') as file:
+                with open(csv_file, mode = 'r', encoding = 'utf-8', errors = 'ignore') as file:
                     csv_reader = csv.reader(file)
                     bottom_of_file = False
 
@@ -78,7 +74,6 @@ class devices:
                         if bottom_of_file and row and len(row) > 0:
                             mac = row[0].strip()
                             bssid = row[5].strip()
-                            #probed_ssid = row[6].strip()  #essid normally in 6th section
 
                             if mac and mac.count(":") == 5 and mac not in self.seen_macs and self.selected_MAC == bssid.lower():
                                 self.seen_macs.add(mac)
@@ -86,15 +81,10 @@ class devices:
                                 vendor = self.get_vendor_from_api(mac)
 
                                 print(f"New MAC: {mac} and {vendor}")
-                                self.socketio.emit('new_mac', {'mac' : mac, 'vendor' : vendor})
+                                self.socketio.emit('new_mac', {'mac' : mac, 'vendor' : vendor, 'timestamp' : self.current_time.strftime('%c')})
 
             except Exception as e:
                 print("Error reading CSV:", e)
 
             time.sleep(2)
    
-
-
-
-
-
