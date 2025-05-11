@@ -4,29 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, intial-scale-1,0">
     <title>Alerts</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='deviceSocketHandler.js') }}"></script>
+    
 
 </head>
-<body>
-    {% include 'nav.html' %}  
+    <body>
+        {% include 'nav.html' %}   
 
-    <h1>Alerts </h1>
-    <div class = "tables">
-    <table>
-        <tr>
-            <th>Time</th>
-            <th>Device</th>
-            
-        </tr>
-        <tr>
-            <th>21/04/24</th>
-            <th>Iphone device joined </th>
-        </tr>
-    </table>
-    
-    </div>
+        <br>
+        <h1>Alerts </h1>
 
+        <div class = "start_container">
+        <table class = "alert_table">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Alert</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
 
+                </tr>
+            </tbody>
+        </table>
+        </div>
 
-</body>
+        <script>
+            function add_row(alert) {
+                var table = document.querySelector(".alert_table tbody");
+                var row = table.insertRow();
+                row.insertCell(0).textContent = alert.timestamp;
+                row.insertCell(1).textContent = `Device joined: ${alert.mac}`;
+            }
+
+            window.onload = function () {
+                var alerts = JSON.parse(sessionStorage.getItem("alerts")) || {};
+                Object.values(alerts).forEach(add_row);
+            };
+
+            window.addEventListener("device_connected", function (event) {
+                const timestamp = new Date().toLocaleString();
+                add_row({ mac: event.detail.mac, timestamp });
+            });
+            </script>
+    </body>
 </html> 
