@@ -134,6 +134,19 @@ def requiredLogin(f):
         return f(*args,**kwargs)
     return decorated_function
 
+
+def adminLock(g):
+    @wraps(g)
+    def decorated_function(*args, **kwargs):
+        
+        if 'username' not in session:
+            return redirect(url_for('index', next = request.url))
+        elif 'username' in session:
+            return redirect(url_for('home', next = request.url))
+        
+        
+        return g(*args,**kwargs)
+    return decorated_function
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -176,6 +189,7 @@ def help():
     return render_template('help.html')
 
 @app.route('/adminForm', methods=['GET', 'POST'])
+@adminLock
 def adminForm():
 
     if request.method == 'POST':
