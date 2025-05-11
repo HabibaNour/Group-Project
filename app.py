@@ -269,9 +269,6 @@ def handle_disconnect():
 def bandwidth():
     return render_template('bandwidth.html') #not used?
 
-@app.route('/networkHealth')
-def networkHealth():
-    return render_template('networkHealth.html') #not used?
 
 #settings and changing user info 
 @app.route('/settingsHome')
@@ -344,37 +341,37 @@ def changeEmail():
         username = request.form['username']
         email = request.form['email']
         newEmail =request.form['newEmail']
-        
+
         connect = sqlite3.connect('database.db')
         connect.row_factory = sqlite3.Row
-        cursor2 = connect.cursor()
+        cursor = connect.cursor()
 
-        cursor2.execute('SELECT * FROM users WHERE username = ?',[username])
-        user = cursor2.fetchone()
-    
+        cursor.execute('SELECT username FROM users WHERE username = ?',[username])
+        userCheck = cursor.fetchone()
+
+
+        if not userCheck:
+                return render_template('changeEmail.html', error = "Invalid username, please try again")
+
         with sqlite3.connect("database.db") as users:
-
-            if user != email:
-                return render_template('changeEmail.html',error="Incorrect email")
-                
-            if user != username:
-                return render_template('changeEmail.html',error="Incorrect username")
-                
             cursor = users.cursor()
             cursor.execute("UPDATE users  SET email =  (?) WHERE username = (?) AND email = (?)",
                         (newEmail,username,email))
             users.commit()
-    return render_template('changeEmail.html',methods=['GET', 'POST'])
+
+        return render_template('changeEmail.html',error="you have successfully changed you email")
+    else:
+        return render_template('changeEmail.html')
+
+        
+
+
 
 @app.route('/alerts')
 @requiredLogin
 def alerts():
     return render_template('alerts.html')
 
-@app.route('/vulnerabilities')
-@requiredLogin
-def vulnerabilities():
-    return render_template('vulnerabilities.html') #not used?
     
 if __name__=='__main__':
     socketio.run(app)

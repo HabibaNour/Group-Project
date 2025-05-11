@@ -13,24 +13,23 @@
 
     <div class="errorMessage">
       {% if error%}
-      <p><strong>{{errorEmail}}</strong></p>
-      <p><strong>{{userError}}</strong></p>
+      <p><strong>{{error}}</strong></p>
       {% endif%}
       </div>
 
    <form method="POST" action="{{ url_for('changeEmail') }}">
 
   <div class="container1">
-    <label for="username"><b>Enter Username</b></label>
+    <label for="username"><b>Enter Username</b></label><br>
     <input type="text" placeholder="Enter Username" name="username" id="username" autocomplete="off" required><br>
       <br>
 
       <div class="email">
-      <label for="email"><b>Enter old Email</b></label>
+      <label for="email"><b>Enter old Email</b></label><br>
       <input type="email" placeholder="Enter Email" name="email" id="email" autocomplete="off" required><br>
       </div>
       <div class="email">
-            <label for="newEmail"><b>Enter new Email</b></label>
+            <label for="newEmail"><b>Enter new Email</b></label><br>
             <input type="email" placeholder="Enter New Email" name="newEmail" id="newEmail" autocomplete="off" required><br>
       </div>
              
