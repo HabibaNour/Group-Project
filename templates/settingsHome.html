@@ -9,13 +9,24 @@
 </head>
 <body>
     {% include 'nav.html' %}  
-<div class>
+<div><br>
     <h1>Settings</h1>
+
+    <div class="setting">
+
     <ul class = "setting">
         <li><a href="{{ url_for('changeEmail') }}">Change email</a></li>
         <li><a href="{{ url_for('changePassword') }}">Change password</a></li>
-        
+        <br><hr><br>
+        <li><a href="{{ url_for('about') }}">To learn more about us</a></li>
+        <li><a href="{{ url_for('help') }}">If you need any help</a></li>
+        <li><a href="{{ url_for('contact') }}">If you have any issue</a></li>
+        <br><hr><br>
+        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+
     </ul>
+
+    </div>
 
 </div>
 
