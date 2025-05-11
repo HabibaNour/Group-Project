@@ -50,8 +50,6 @@ def db():
     connect.commit()
     connect.close()
     
-    ##connect2 = sqlite3.connect('database.db')
-    ##connect2.execute('''CREATE TABLE IF NOT EXISTS alerts (Timestamp TIMESTAMP, device TEXT not null )''')
 
     
 @app.route('/', methods=['GET', 'POST'])
@@ -265,19 +263,15 @@ def devices():
 def handle_disconnect():
     ssid_selector.stop_SSID_selection()
 
-@app.route('/bandwidth')
-def bandwidth():
-    return render_template('bandwidth.html') #not used?
 
 
 #settings and changing user info 
 @app.route('/settingsHome')
-@requiredLogin
+
 def settingsHome():
     return render_template('settingsHome.html')
 
 @app.route('/changePassword', methods=['GET', 'POST'])
-@requiredLogin
 def changePassword():
     min_length = 8
     uppercase_regex = re.compile(r'[A-Z]')
@@ -337,7 +331,7 @@ def changePassword():
     return render_template('changePassword.html')
 
 @app.route('/changeEmail',methods=['GET', 'POST'])
-@requiredLogin
+
 def changeEmail():
     if request.method == 'POST':
         username = request.form['username']

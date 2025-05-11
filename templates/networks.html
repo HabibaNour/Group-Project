@@ -14,16 +14,16 @@
 </head>
     <body>
         
-        
+        {% include 'nav.html' %}
     <div class = "main">
         <h1>Networks </h1>
-        <a href = '/'>Click here to go back to home page </a>
+       
 
     </div>
         <h1>Select Your Network</h1>
             
         <input type="text" id="ssid_input" placeholder="Enter SSID" list="ssid_list">
-        <datalist id="ssid_list"></datalist>
+        <datalist id="ssid_list"></datalist><br>
         <button onclick="set_SSID()">Submit</button>
 
         <h2>Network Details</h2>
