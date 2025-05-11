@@ -8,6 +8,10 @@
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
     <link rel="stylesheet" type="text/css" href="static/overhang.min.css" />
     <script type="text/javascript" src="static/overhang.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='deviceSocketHandler.js') }}"></script>
+  </head>
+  <body>
   </head>
 <body>
   {% include 'nav.html' %}
@@ -40,45 +44,41 @@
   </div>
 
   <script>
-    var socket = io.connect("http://localhost:5000");
     var list = document.getElementById('mac-list');
 
-    //getting network details from sessionStorage
-    let selected_SSID = sessionStorage.getItem('selected_SSID');
-    let encryption = sessionStorage.getItem('crypto');
-    let channel = sessionStorage.getItem('channel');
 
-    document.getElementById('selected_SSID').innerText = selected_SSID || "No SSID selected"; 
-    document.getElementById('encryption').innerText = encryption || "Unknown Encryption";
-    document.getElementById('channel').innerText = channel || "Unknown Channel";
-              
-
-    var all_devices = JSON.parse(sessionStorage.getItem("devices")) || {};
-
-    function addToList(data) {
+    function add_to_list(data) {
         var item = document.createElement('li');
         item.innerHTML = `&emsp;&emsp;&emsp; Device MAC: ${data.mac}&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Vendor: ${data.vendor}`;
         list.appendChild(item);
     } 
 
     window.onload = function(){
-      Object.values(all_devices).forEach(addToList);
-    }
-    
-    socket.on('new_mac', function(data) {
-      if (!all_devices[data.mac]) {
-        all_devices[data.mac] = data;
-        sessionStorage.setItem("devices", JSON.stringify(all_devices)); //puts sessionStorage but as a string
-        addToList(data);
+      //getting network details from sessionStorage
+      let selected_SSID = sessionStorage.getItem('selected_SSID');
+      let encryption = sessionStorage.getItem('crypto');
+      let channel = sessionStorage.getItem('channel');
 
-        $("body").overhang({
-          type: "info",
-          message: "New Device has connected!",
-          duration: 4,
-          upper: true
-        });
-      }
+      document.getElementById('selected_SSID').innerText = selected_SSID || "No SSID selected"; 
+      document.getElementById('encryption').innerText = encryption || "Unknown Encryption";
+      document.getElementById('channel').innerText = channel || "Unknown Channel";
+                
+
+      var all_devices = JSON.parse(sessionStorage.getItem("devices")) || {};
+
+      Object.values(all_devices).forEach(add_to_list);
+    }
+
+    window.addEventListener("device_connected", function (event) {
+      add_to_list(event.detail);
+      $("body").overhang({
+        type: "info",
+        message: "New Device has connected!",
+        duration: 4,
+        upper: true
+      });
     });
+  
   </script>
 </body>
 </html>
