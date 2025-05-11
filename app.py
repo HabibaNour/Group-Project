@@ -238,15 +238,11 @@ def loginAdmin():
             
         return render_template('loginAdmin.html')
 
-
-
-#starts the tests when the app starts
-speed_test = bandwidth_tests(socketio) #creates object passing socketio through
-speed_test.start_speedtests()
-
 @app.route('/speedtest')
 @requiredLogin
 def speedtest():
+    speed_test = bandwidth_tests(socketio) 
+    speed_test.start_speedtests()
     return render_template('speedtest.html')
 
 @app.route('/networks')
@@ -360,9 +356,6 @@ def changeEmail():
         return render_template('changeEmail.html')
 
         
-
-
-
 @app.route('/alerts')
 @requiredLogin
 def alerts():
