@@ -1,3 +1,8 @@
+#Some of this code was adapted from the following sources:
+#https://thepythoncode.com/article/building-wifi-scanner-in-python-scapy
+#https://socket.io/docs/v3/emitting-events/
+#https://thepacketgeek.com/scapy/building-network-tools/
+
 from scapy.all import *
 from scapy.all import Dot11Beacon, Dot11Elt, Dot11
 import os

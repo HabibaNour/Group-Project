@@ -1,3 +1,10 @@
+#Some of this code was adapted from the following places:
+#https://github.com/SiliconDojo/Online-Classes/blob/main/Coding%20DIY%20-%20Build%20Network%20Monitoring%20Web%20Apps/Coding%20DIY%20-%20Build%20Network%20Monitoring%20Web%20Apps%20-%20Lab%20Book.pdf
+#https://docs.python.org/3/library/csv.html
+#https://socket.io/docs/v3/emitting-events/
+#https://thepacketgeek.com/scapy/building-network-tools/
+#https://stackoverflow.com/questions/60612283/how-to-capture-airodump-ng-scan-output-to-csv-that-mirrors-the-output-shown-in-t
+
 from scapy.all import *
 import os
 import time
