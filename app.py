@@ -55,6 +55,7 @@ def db():
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+        #source from: https://medium.com/@amaltomparakkaden/building-a-password-generator-and-strength-checker-with-flask-and-html-e8b18374d397
     min_length = 8
     uppercase_regex = re.compile(r'[A-Z]')
     lowercase_regex = re.compile(r'[a-z]')
@@ -90,6 +91,7 @@ def register():
         with sqlite3.connect("database.db") as users:
             cursor = users.cursor()
 
+            #source for hashing: https://www.geeksforgeeks.org/password-hashing-with-bcrypt-in-flask/
             hash_password = bcrypt.generate_password_hash(password).decode('utf-8')
             bcrypt.generate_password_hash(hash_password)
             
@@ -97,7 +99,8 @@ def register():
             if password != confpassword:
                 error="Your password and confirmed password need to be the same"
                 return render_template('register.html', error=error) 
-            
+
+             #source from: https://medium.com/@amaltomparakkaden/building-a-password-generator-and-strength-checker-with-flask-and-html-e8b18374d397
             if len(password ) < min_length:
                 LenError="Weak: password should be at least 8 characters"
                 return render_template('register.html', error=LenError)
@@ -116,6 +119,7 @@ def register():
                 return render_template('register.html', error=charError)
 
 
+            #source from: https://www.geeksforgeeks.org/how-to-build-a-web-app-using-flask-and-sqlite-in-python/
             cursor.execute("INSERT INTO users \
                         (username, email, password, confpassword) VALUES (?,?,?,?)",
                         (username, email, hash_password, hash_password))
@@ -150,6 +154,7 @@ def adminLock(g):
     return decorated_function
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    #source from: https://www.digitalocean.com/community/tutorials/how-to-use-an-sqlite-database-in-a-flask-application
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
@@ -162,6 +167,7 @@ def login():
         cursor.execute('SELECT * FROM users WHERE username = ?',[username])
         user = cursor.fetchone()
 
+            #source for hashing: https://flask-bcrypt.readthedocs.io/en/1.0.1/index.html
         if user and bcrypt.check_password_hash(user['password'], password):
             session['username']= user['username']
             return redirect("/home")
