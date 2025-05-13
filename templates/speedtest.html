@@ -49,6 +49,7 @@
 
 
   <script>
+    // source: https://www.youtube.com/watch?v=DzktiZUdzIE
     //for needle 
     const gaugeNeedle = {
       id: 'gaugeNeedle',
@@ -81,6 +82,7 @@
       }
       
     };
+    // source: https://www.youtube.com/watch?v=DzktiZUdzIE
     //for speedtest shape 
     const config = {
       type:'doughnut',
@@ -113,6 +115,7 @@
       config
     );
     var socket = io.connect("http://localhost:5000");
+    //source for code for charts: https://www.chartjs.org/docs/latest/charts/bar.html
     //download chart
     const ctx = document.getElementById('myChart');
     const chart = new Chart(ctx, {
@@ -166,7 +169,7 @@
       
       }
     );
-    
+    // code based on for socket : https://github.com/socketio/socket.io/issues/1602
     //buttons to stop and start speed test
     socket.on('connect',() =>{
         console.log("reconnect");
@@ -174,7 +177,7 @@
     socket.on('disconnect',() =>{
       console.log("disconnect");
     });
-    
+    //source: https://www.w3schools.com/js/js_htmldom_eventlistener.asp
     document.getElementById('turnOn').addEventListener("click",() =>{
       socket.connect();
     });
@@ -204,7 +207,7 @@
       ping.push(data.ping);
       chart3.data.datasets[0].data.push(ping);
 
-
+      //source: https://www.w3schools.com/jsref/met_win_setinterval.asp
       // updates charts every 2 minutes 
       setInterval(chart.update(),1200000);
       setInterval(chart2.update(),1200000);

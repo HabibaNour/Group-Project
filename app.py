@@ -124,6 +124,7 @@ def register():
         return redirect("/index") 
     else: 
         return render_template('register.html') 
+#source: https://flask.palletsprojects.com/en/stable/patterns/viewdecorators/
  # will lock pages so need to be logged in    
 def requiredLogin(f):
     @wraps(f)
@@ -134,7 +135,7 @@ def requiredLogin(f):
         return f(*args,**kwargs)
     return decorated_function
 
-
+#source https://flask.palletsprojects.com/en/stable/patterns/viewdecorators/
 def adminLock(g):
     @wraps(g)
     def decorated_function(*args, **kwargs):
