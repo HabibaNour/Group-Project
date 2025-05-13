@@ -79,7 +79,7 @@
     {%if session['username']  %}
     <div class="topnav" id="myTopnav">
         <a href="{{ url_for('home') }}"><i class="fa fa-fw fa-home"></i>Home</a>
-        <a href="{{ url_for('networks') }}"><i class="fa fa-wifi"></i>Networks</a>
+        <a href="{{ url_for('home') }}"><i class="fa fa-wifi"></i>Networks</a>
         <a href="{{ url_for('devices') }}"><i class="fa fa-desktop"></i>Devices</a>
         <a href="{{ url_for('speedtest') }}"><i class="fa fa-tachometer"></i>Speed test</a>
         <a href="{{ url_for('alerts') }}"><i class="fa fa-exclamation-circle"></i>Alerts</a>
